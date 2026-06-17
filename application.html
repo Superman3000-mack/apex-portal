@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Marketing Innovation — Agent Application</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0A0A0A;
+  --charcoal:#141414;
+  --dark:#1c1c1c;
+  --gold:#C9A84C;
+  --gold2:#E8C97A;
+  --white:#fff;
+  --gray:#8A8A8A;
+  --border:#2E2E2E;
+  --red:#B91C1C;
+  --green:#16A34A;
+  --blue:#635BFF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);min-height:100vh;}
+
+/* HEADER */
+.app-header{background:linear-gradient(135deg,var(--charcoal),#1a1208);border-bottom:1px solid rgba(201,168,76,0.2);padding:28px 24px 24px;}
+.app-header-top{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.app-emblem{width:48px;height:48px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--black);flex-shrink:0;}
+.app-header-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--white);line-height:1.1;}
+.app-header-name span{color:var(--gold);}
+.app-title{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,6vw,38px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:12px;}
+.app-title em{color:var(--gold2);font-style:italic;}
+.app-instructions{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;padding:14px 16px;background:rgba(201,168,76,0.06);border-left:3px solid var(--gold);}
+.app-instructions strong{color:var(--gold2);}
+
+/* PROGRESS */
+.progress-bar-wrap{background:rgba(255,255,255,0.05);height:4px;margin:0;}
+.progress-bar{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;transition:width 0.5s ease;}
+
+/* FORM BODY */
+.form-body{max-width:680px;margin:0 auto;padding:28px 20px 60px;}
+
+/* SECTIONS */
+.form-section{margin-bottom:36px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.section-num{width:32px;height:32px;background:var(--gold);color:var(--black);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--white);}
+
+/* FIELDS */
+.field{margin-bottom:20px;}
+.field-label{font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;display:block;line-height:1.5;}
+.field-label em{color:rgba(255,255,255,0.45);font-style:normal;font-weight:400;font-size:12px;}
+.field input[type=text],
+.field input[type=email],
+.field input[type=tel],
+.field textarea{width:100%;background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--white);padding:13px 16px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.3s;-webkit-appearance:none;border-radius:0;}
+.field input:focus,.field textarea:focus{border-color:var(--gold);}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.2);}
+.field textarea{resize:vertical;min-height:90px;}
+.field-line{width:100%;border:none;border-bottom:1px solid var(--border);background:transparent;color:var(--white);padding:10px 0;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.3s;}
+.field-line:focus{border-bottom-color:var(--gold);}
+.field-line::placeholder{color:rgba(255,255,255,0.2);}
+
+/* YES/NO */
+.yn-wrap{display:flex;gap:12px;margin-top:4px;}
+.yn-btn{flex:1;padding:13px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5);font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.25s;text-align:center;}
+.yn-btn:hover{border-color:var(--gold);color:var(--gold);}
+.yn-btn.yes.active{background:rgba(22,163,74,0.15);border-color:var(--green);color:var(--green);}
+.yn-btn.no.active{background:rgba(185,28,28,0.15);border-color:var(--red);color:#F87171;}
+
+/* SCALE */
+.scale-wrap{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.scale-btn{width:44px;height:44px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.45);font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.25s;display:flex;align-items:center;justify-content:center;}
+.scale-btn:hover{border-color:var(--gold);color:var(--gold);}
+.scale-btn.active{background:var(--gold);border-color:var(--gold);color:var(--black);}
+.scale-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--gray);margin-top:6px;letter-spacing:1px;}
+
+/* QUESTION BLOCK */
+.q-block{margin-bottom:24px;padding:18px 16px;background:rgba(255,255,255,0.02);border:1px solid var(--border);transition:border-color 0.3s;}
+.q-block:focus-within{border-color:rgba(201,168,76,0.3);}
+.q-text{font-size:14px;font-weight:600;color:var(--white);margin-bottom:12px;line-height:1.55;}
+.q-text span{color:rgba(255,255,255,0.4);font-weight:400;font-size:12px;}
+.q-note{font-size:12px;color:var(--gold);font-style:italic;margin-top:8px;}
+
+/* SIGNATURE */
+.sig-wrap{background:rgba(255,255,255,0.04);border:1px solid var(--border);margin-top:8px;position:relative;}
+.sig-canvas{width:100%;height:160px;display:block;cursor:crosshair;touch-action:none;}
+.sig-toolbar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-top:1px solid var(--border);}
+.sig-clear{background:rgba(185,28,28,0.15);border:1px solid rgba(185,28,28,0.3);color:#F87171;padding:7px 16px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.25s;}
+.sig-clear:hover{background:rgba(185,28,28,0.3);}
+.sig-hint{font-size:11px;color:var(--gray);display:flex;align-items:center;gap:6px;}
+.sig-hint::before{content:'✍️';font-size:14px;}
+.sig-placeholder{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:13px;color:rgba(255,255,255,0.15);pointer-events:none;text-align:center;transition:opacity 0.3s;}
+
+/* DATE */
+.date-field{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--white);padding:13px 16px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;width:100%;transition:border-color 0.3s;}
+.date-field:focus{border-color:var(--gold);}
+.date-field::-webkit-calendar-picker-indicator{filter:invert(0.6);}
+
+/* CERTIFICATION */
+.cert-box{background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:18px 20px;margin-bottom:24px;}
+.cert-box p{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.75;}
+.cert-box strong{color:var(--white);}
+
+/* SUBMIT */
+.submit-wrap{margin-top:12px;}
+.submit-btn{width:100%;background:var(--gold);color:var(--black);padding:18px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.submit-btn:hover{background:var(--gold2);}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.submit-note{font-size:11px;color:var(--gray);text-align:center;margin-top:10px;line-height:1.6;}
+
+/* SUCCESS */
+.success-screen{display:none;text-align:center;padding:60px 24px;}
+.success-icon{font-size:56px;display:block;margin-bottom:20px;}
+.success-screen h2{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--white);margin-bottom:12px;}
+.success-screen p{font-size:14px;color:var(--gray);line-height:1.75;max-width:420px;margin:0 auto 24px;}
+.success-ref{font-size:11px;color:var(--gold);letter-spacing:2px;}
+
+/* VALIDATION */
+.field-error{border-color:#F87171!important;}
+.err-msg{font-size:11px;color:#F87171;margin-top:5px;display:none;}
+.err-msg.show{display:block;}
+
+/* DIVIDER */
+.form-divider{border:none;border-top:1px solid var(--border);margin:28px 0;}
+
+@media(max-width:480px){
+  .scale-btn{width:36px;height:36px;font-size:12px;}
+  .app-title{font-size:24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="app-header-top">
+    <div class="app-emblem">A</div>
+    <div class="app-header-name">Apex <span>Marketing Innovation</span></div>
+  </div>
+  <h1 class="app-title">Agent <em>Application</em></h1>
+  <div class="app-instructions">
+    <strong>Instructions:</strong> Complete all sections electronically. Sign digitally in Section 5. Tap <strong>Submit Application</strong> to send directly to Apex Marketing Innovation. All fields are required unless marked optional.
+  </div>
+</div>
+<div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<div class="form-body">
+  <div id="applicationForm">
+
+    <!-- SECTION 1 -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div class="section-title">Personal Information</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">1. Full Name</label>
+        <input type="text" id="fullName" placeholder="Enter your full legal name">
+        <div class="err-msg" id="err-fullName">Please enter your full name.</div>
+      </div>
+      <div class="field">
+        <label class="field-label">2. Phone Number</label>
+        <input type="tel" id="phone" placeholder="(555) 000-0000">
+        <div class="err-msg" id="err-phone">Please enter your phone number.</div>
+      </div>
+      <div class="field">
+        <label class="field-label">3. Email Address</label>
+        <input type="email" id="email" placeholder="your@email.com">
+        <div class="err-msg" id="err-email">Please enter a valid email address.</div>
+      </div>
+      <div class="field">
+        <label class="field-label">4. City &amp; State</label>
+        <input type="text" id="cityState" placeholder="Chicago, IL">
+        <div class="err-msg" id="err-cityState">Please enter your city and state.</div>
+      </div>
+    </div>
+
+    <hr class="form-divider">
+
+    <!-- SECTION 2 -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div class="section-title">Experience &amp; Skills</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">5. Do you have any sales experience? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q5','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q5','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q5" value="">
+        <div class="err-msg" id="err-q5">Please select YES or NO.</div>
+        <div style="margin-top:14px;">
+          <label class="field-label">If yes, briefly describe: <em>(optional)</em></label>
+          <textarea id="q5desc" placeholder="Briefly describe your sales experience..."></textarea>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">6. On a scale of 1 to 10, how would you rate your people skills? <span>(Circle one)</span></div>
+        <div class="scale-wrap" id="scale6">
+          <button class="scale-btn" onclick="setScale(this,'q6',1)">1</button>
+          <button class="scale-btn" onclick="setScale(this,'q6',2)">2</button>
+          <button class="scale-btn" onclick="setScale(this,'q6',3)">3</button>
+          <button class="scale-btn" onclick="setScale(this,'q6',4)">4</button>
+          <button class="scale-btn" onclick="setScale(this,'q6',5)">5</button>
+          <button class="scale-btn" onclick="setScale(this,'q6',6)">6</button>
+          <button class="scale-btn" onclick="setScale(this,'q6',7)">7</button>
+          <button class="scale-btn" onclick="setScale(this,'q6',8)">8</button>
+          <button class="scale-btn" onclick="setScale(this,'q6',9)">9</button>
+          <button class="scale-btn" onclick="setScale(this,'q6',10)">10</button>
+        </div>
+        <div class="scale-labels"><span>POOR</span><span>EXCELLENT</span></div>
+        <input type="hidden" id="q6" value="">
+        <div class="err-msg" id="err-q6">Please select a rating.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">7. Are you comfortable cold calling business owners? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q7','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q7','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q7" value="">
+        <div class="err-msg" id="err-q7">Please select YES or NO.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">8. Are you comfortable meeting business owners in person to conduct a sales demonstration? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q8','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q8','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q8" value="">
+        <div class="err-msg" id="err-q8">Please select YES or NO.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">9. Are you comfortable conducting virtual demonstrations via Zoom, Google Meet, or FaceTime? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q9','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q9','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q9" value="">
+        <div class="err-msg" id="err-q9">Please select YES or NO.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">10. Describe a time you successfully persuaded someone to take action:</div>
+        <textarea id="q10" placeholder="Describe the situation, what you did, and what the outcome was..."></textarea>
+        <div class="err-msg" id="err-q10">Please answer this question.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">11. How do you handle rejection or when a prospect says no?</div>
+        <textarea id="q11" placeholder="Describe your approach to rejection and how you stay motivated..."></textarea>
+        <div class="err-msg" id="err-q11">Please answer this question.</div>
+      </div>
+    </div>
+
+    <hr class="form-divider">
+
+    <!-- SECTION 3 -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div class="section-title">Work Style &amp; Commitment</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">12. This role requires a commitment of approximately 40 hours per week. Can you commit to this? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q12','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q12','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q12" value="">
+        <div class="err-msg" id="err-q12">Please select YES or NO.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">13. Have you ever worked as an independent contractor before? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q13','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q13','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q13" value="">
+        <div class="err-msg" id="err-q13">Please select YES or NO.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">14. Are you comfortable with a commission-only position where your income is based entirely on your performance with no earning limit? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q14','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q14','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q14" value="">
+        <div class="err-msg" id="err-q14">Please select YES or NO.</div>
+        <div class="q-note">Agents earn 25% commission on every sale. There is no cap — the more you sell, the more you earn.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">15. Do you understand that this is a 1099 independent contractor role, not an employee position? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q15','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q15','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q15" value="">
+        <div class="err-msg" id="err-q15">Please select YES or NO.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">16. Do you have reliable transportation to meet clients for in-person demos? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q16','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q16','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q16" value="">
+        <div class="err-msg" id="err-q16">Please select YES or NO.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">17. Do you have a reliable internet connection and a device for virtual demos? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q17','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q17','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q17" value="">
+        <div class="err-msg" id="err-q17">Please select YES or NO.</div>
+      </div>
+    </div>
+
+    <hr class="form-divider">
+
+    <!-- SECTION 4 -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div class="section-title">Legal &amp; Agreement</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">18. Are you legally authorized to work as an independent contractor in the United States? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q18','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q18','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q18" value="">
+        <div class="err-msg" id="err-q18">Please select YES or NO.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">19. Have you ever been terminated from a sales position for violating a non-compete or non-solicitation agreement? <span>(Circle one)</span></div>
+        <div class="yn-wrap">
+          <button class="yn-btn yes" onclick="setYN(this,'q19','YES')">YES</button>
+          <button class="yn-btn no" onclick="setYN(this,'q19','NO')">NO</button>
+        </div>
+        <input type="hidden" id="q19" value="">
+        <div class="err-msg" id="err-q19">Please select YES or NO.</div>
+      </div>
+    </div>
+
+    <hr class="form-divider">
+
+    <!-- SECTION 5 -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div class="section-title">Signature</div>
+      </div>
+
+      <div class="cert-box">
+        <p>By signing below, I certify that <strong>all information provided is true and complete.</strong> I understand that false information may result in <strong>immediate rejection or termination.</strong></p>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Signature <em>— Draw your signature below with your finger or mouse</em></label>
+        <div class="sig-wrap">
+          <canvas class="sig-canvas" id="sigCanvas" width="640" height="160"></canvas>
+          <div class="sig-placeholder" id="sigPlaceholder">✍️ Sign here</div>
+          <div class="sig-toolbar">
+            <div class="sig-hint">Draw your signature above</div>
+            <button class="sig-clear" onclick="clearSig()">Clear</button>
+          </div>
+        </div>
+        <div class="err-msg" id="err-sig">Please provide your signature.</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Date</label>
+        <input type="date" id="signDate" class="date-field">
+        <div class="err-msg" id="err-signDate">Please enter the date.</div>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-wrap">
+      <button class="submit-btn" id="submitBtn" onclick="submitApplication()">
+        ✉️ &nbsp;Submit Application
+      </button>
+      <p class="submit-note">Your completed application will be sent directly to <strong>apexmarketinginnovation@gmail.com</strong><br>A copy will open in your email app for you to send.</p>
+    </div>
+
+  </div><!-- end applicationForm -->
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <span class="success-icon">✅</span>
+    <h2>Application Submitted</h2>
+    <p>Your application has been sent to Apex Marketing Innovation. We will review your submission and be in touch within <strong>2 business days.</strong></p>
+    <div class="success-ref" id="successRef"></div>
+  </div>
+
+</div><!-- end form-body -->
+
+<script>
+// ── PROGRESS ─────────────────────────────────────────────────────
+function updateProgress(){
+  const fields=['fullName','phone','email','cityState','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18','q19','sig'];
+  let filled=0;
+  fields.forEach(id=>{
+    if(id==='sig'){if(!sigEmpty())filled++;return;}
+    const el=document.getElementById(id);
+    if(el&&el.value&&el.value.trim()!=='')filled++;
+  });
+  const pct=Math.round((filled/fields.length)*100);
+  document.getElementById('progressBar').style.width=pct+'%';
+}
+setInterval(updateProgress,500);
+
+// ── YES/NO ────────────────────────────────────────────────────────
+function setYN(btn,fieldId,val){
+  const wrap=btn.parentNode;
+  wrap.querySelectorAll('.yn-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(fieldId).value=val;
+  hideErr(fieldId);
+}
+
+// ── SCALE ─────────────────────────────────────────────────────────
+function setScale(btn,fieldId,val){
+  const wrap=btn.parentNode;
+  wrap.querySelectorAll('.scale-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(fieldId).value=val;
+  hideErr(fieldId);
+}
+
+// ── SIGNATURE ─────────────────────────────────────────────────────
+const canvas=document.getElementById('sigCanvas');
+const ctx=canvas.getContext('2d');
+let drawing=false,hasSig=false;
+
+function resizeCanvas(){
+  const rect=canvas.getBoundingClientRect();
+  const ratio=window.devicePixelRatio||1;
+  // Save current drawing
+  const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+  canvas.width=rect.width*ratio;
+  canvas.height=160*ratio;
+  canvas.style.height='160px';
+  ctx.scale(ratio,ratio);
+  ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=2.5;ctx.strokeStyle='#E8C97A';
+  ctx.putImageData(imgData,0,0);
+}
+window.addEventListener('resize',resizeCanvas);
+resizeCanvas();
+
+function getPos(e){
+  const rect=canvas.getBoundingClientRect();
+  if(e.touches){
+    return{x:e.touches[0].clientX-rect.left,y:e.touches[0].clientY-rect.top};
+  }
+  return{x:e.clientX-rect.left,y:e.clientY-rect.top};
+}
+
+canvas.addEventListener('mousedown',e=>{drawing=true;const p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});
+canvas.addEventListener('mousemove',e=>{if(!drawing)return;const p=getPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();markSig();});
+canvas.addEventListener('mouseup',()=>drawing=false);
+canvas.addEventListener('mouseleave',()=>drawing=false);
+canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;const p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});
+canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=getPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();markSig();},{passive:false});
+canvas.addEventListener('touchend',()=>drawing=false);
+
+function markSig(){
+  hasSig=true;
+  document.getElementById('sigPlaceholder').style.opacity='0';
+  hideErr('sig');
+}
+function sigEmpty(){
+  const data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+  for(let i=3;i<data.length;i+=4){if(data[i]>0)return false;}
+  return true;
+}
+function clearSig(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  hasSig=false;
+  document.getElementById('sigPlaceholder').style.opacity='1';
+}
+
+// ── VALIDATION ────────────────────────────────────────────────────
+function showErr(id){
+  const e=document.getElementById('err-'+id);
+  const f=document.getElementById(id);
+  if(e)e.classList.add('show');
+  if(f)f.classList.add('field-error');
+}
+function hideErr(id){
+  const e=document.getElementById('err-'+id);
+  const f=document.getElementById(id);
+  if(e)e.classList.remove('show');
+  if(f)f.classList.remove('field-error');
+}
+
+function validate(){
+  let ok=true;
+  // Text fields
+  const textFields=[
+    {id:'fullName',label:'fullName'},
+    {id:'phone',label:'phone'},
+    {id:'email',label:'email'},
+    {id:'cityState',label:'cityState'},
+    {id:'q10',label:'q10'},
+    {id:'q11',label:'q11'},
+  ];
+  textFields.forEach(({id})=>{
+    const el=document.getElementById(id);
+    if(!el||!el.value.trim()){showErr(id);ok=false;}else{hideErr(id);}
+  });
+  // Email format
+  const emailEl=document.getElementById('email');
+  if(emailEl&&emailEl.value&&!/\S+@\S+\.\S+/.test(emailEl.value)){showErr('email');ok=false;}
+  // Hidden selects (YN + scale)
+  const required=['q5','q6','q7','q8','q9','q12','q13','q14','q15','q16','q17','q18','q19'];
+  required.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el||!el.value){showErr(id);ok=false;}else{hideErr(id);}
+  });
+  // Signature
+  if(sigEmpty()){showErr('sig');ok=false;}else{hideErr('sig');}
+  // Date
+  const dt=document.getElementById('signDate');
+  if(!dt||!dt.value){showErr('signDate');ok=false;}else{hideErr('signDate');}
+  return ok;
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────
+function submitApplication(){
+  if(!validate()){
+    // Scroll to first error
+    const firstErr=document.querySelector('.err-msg.show');
+    if(firstErr)firstErr.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.innerHTML='⏳ &nbsp;Preparing...';
+
+  const name=document.getElementById('fullName').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const city=document.getElementById('cityState').value.trim();
+  const q5=document.getElementById('q5').value;
+  const q5d=document.getElementById('q5desc').value.trim();
+  const q6=document.getElementById('q6').value;
+  const q7=document.getElementById('q7').value;
+  const q8=document.getElementById('q8').value;
+  const q9=document.getElementById('q9').value;
+  const q10=document.getElementById('q10').value.trim();
+  const q11=document.getElementById('q11').value.trim();
+  const q12=document.getElementById('q12').value;
+  const q13=document.getElementById('q13').value;
+  const q14=document.getElementById('q14').value;
+  const q15=document.getElementById('q15').value;
+  const q16=document.getElementById('q16').value;
+  const q17=document.getElementById('q17').value;
+  const q18=document.getElementById('q18').value;
+  const q19=document.getElementById('q19').value;
+  const signDate=document.getElementById('signDate').value;
+
+  const sigData=canvas.toDataURL('image/png');
+  const ref='APP-'+Date.now().toString().slice(-7);
+  const submitted=new Date().toLocaleString();
+
+  const body=
+'APEX MARKETING INNOVATION — AGENT APPLICATION\n'+
+'Reference: '+ref+'\n'+
+'Submitted: '+submitted+'\n'+
+'================================================\n\n'+
+'SECTION 1: PERSONAL INFORMATION\n'+
+'1. Full Name: '+name+'\n'+
+'2. Phone Number: '+phone+'\n'+
+'3. Email Address: '+email+'\n'+
+'4. City & State: '+city+'\n\n'+
+'SECTION 2: EXPERIENCE & SKILLS\n'+
+'5. Sales Experience: '+q5+(q5d?' — '+q5d:'')+'\n'+
+'6. People Skills (1-10): '+q6+'\n'+
+'7. Comfortable Cold Calling: '+q7+'\n'+
+'8. Comfortable In-Person Demos: '+q8+'\n'+
+'9. Comfortable Virtual Demos: '+q9+'\n'+
+'10. Persuasion Example:\n'+q10+'\n\n'+
+'11. Handling Rejection:\n'+q11+'\n\n'+
+'SECTION 3: WORK STYLE & COMMITMENT\n'+
+'12. Can Commit 40 hrs/week: '+q12+'\n'+
+'13. Prior Independent Contractor: '+q13+'\n'+
+'14. Comfortable Commission-Only: '+q14+'\n'+
+'15. Understands 1099 Role: '+q15+'\n'+
+'16. Reliable Transportation: '+q16+'\n'+
+'17. Reliable Internet & Device: '+q17+'\n\n'+
+'SECTION 4: LEGAL & AGREEMENT\n'+
+'18. Authorized to Work in US: '+q18+'\n'+
+'19. Ever Terminated for Non-Compete Violation: '+q19+'\n\n'+
+'SECTION 5: SIGNATURE\n'+
+'Signed by: '+name+'\n'+
+'Date: '+signDate+'\n'+
+'Digital Signature: [Captured — see image attachment]\n\n'+
+'================================================\n'+
+'Sent via Apex Agent Application Form';
+
+  const subject=encodeURIComponent('Agent Application — '+name+' — '+ref);
+  const bodyEncoded=encodeURIComponent(body);
+  fetch('https://formsubmit.co/apexmarketinginnovation@gmail.com',{method:'POST',body:(function(){var f=new FormData();f.append('_subject','Application');f.append('_captcha','false');f.append('Data',body);return f;})()}).catch(function(){});
+  window.open('mailto:apexmarketinginnovation@gmail.com?subject='+subject+'&body='+bodyEncoded);
+
+  // Show success
+  setTimeout(()=>{
+    document.getElementById('applicationForm').style.display='none';
+    const s=document.getElementById('successScreen');
+    s.style.display='block';
+    document.getElementById('successRef').textContent='Reference: '+ref;
+    // Offer signature download
+    const a=document.createElement('a');
+    a.href=sigData;
+    a.download='Signature_'+name.replace(/\s/g,'_')+'_'+ref+'.png';
+    const note=document.createElement('p');
+    note.style.cssText='font-size:12px;color:rgba(255,255,255,0.4);margin-top:20px;line-height:1.7;';
+    note.innerHTML='Your email app has opened with your completed application.<br><strong style="color:rgba(255,255,255,0.7);">Please attach your signature image before sending:</strong>';
+    s.appendChild(note);
+    a.style.cssText='display:inline-block;margin-top:12px;background:var(--gold);color:var(--black);padding:12px 24px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;';
+    a.textContent='⬇ Download Signature Image';
+    s.appendChild(a);
+  },800);
+}
+
+// Set today's date as default
+document.getElementById('signDate').valueAsDate=new Date();
+</script>
+</body>
+</html>

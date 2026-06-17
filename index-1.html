@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Marketing Innovation — Agent Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--black:#080808;--dark:#111;--card:#181818;--border:#222;--gold:#C9A84C;--gold2:#E8C97A;--white:#F0F0F0;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);min-height:100vh;}
+/* DASHBOARD */
+.db-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:20px;margin-bottom:14px;}
+.db-card-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:14px;}
+.db-stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+.db-stat{background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:14px;}
+.db-stat-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold);}
+.db-stat-lbl{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
+.db-tab{padding:12px 18px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.45);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.db-tab:hover{color:#fff;}
+.db-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.db-fi{margin-bottom:12px;}
+.db-fi label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);display:block;margin-bottom:6px;font-weight:600;}
+.db-fi input,.db-fi select,.db-fi textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:#fff;padding:10px 13px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.25s;}
+.db-fi input:focus,.db-fi select:focus,.db-fi textarea:focus{border-color:var(--gold);}
+.db-fi input::placeholder,.db-fi textarea::placeholder{color:rgba(255,255,255,0.18);}
+.db-fi select option{background:#1a1a1a;}
+.db-fi textarea{resize:vertical;min-height:80px;}
+.db-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.db-btn{padding:10px 18px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.db-btn-gold{background:var(--gold);color:#000;}
+.db-btn-gold:hover{background:var(--gold2);}
+.db-btn-ghost{background:transparent;color:var(--gold);border:1px solid rgba(201,168,76,0.3);}
+.db-btn-ghost:hover{background:rgba(201,168,76,0.08);}
+.db-btn-red{background:rgba(185,28,28,0.15);color:#F87171;border:1px solid rgba(185,28,28,0.3);}
+.db-btn-red:hover{background:rgba(185,28,28,0.3);}
+.db-btn-green{background:rgba(22,163,74,0.15);color:#4ADE80;border:1px solid rgba(22,163,74,0.3);}
+.db-btn-blue{background:rgba(59,130,246,0.15);color:#93C5FD;border:1px solid rgba(59,130,246,0.3);}
+.db-btn-sm{padding:6px 12px;font-size:10px;}
+.db-list-item{background:rgba(255,255,255,0.02);border:1px solid var(--border);padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.db-li-main{flex:1;}
+.db-li-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
+.db-li-sub{font-size:11px;color:rgba(255,255,255,0.4);}
+.db-li-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.db-badge{font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 9px;text-transform:uppercase;}
+.db-badge-green{background:rgba(22,163,74,0.15);color:#4ADE80;border:1px solid rgba(22,163,74,0.25);}
+.db-badge-gold{background:rgba(201,168,76,0.15);color:var(--gold2);border:1px solid rgba(201,168,76,0.25);}
+.db-badge-red{background:rgba(185,28,28,0.15);color:#F87171;border:1px solid rgba(185,28,28,0.25);}
+.db-badge-blue{background:rgba(59,130,246,0.15);color:#93C5FD;border:1px solid rgba(59,130,246,0.25);}
+.db-badge-orange{background:rgba(245,158,11,0.15);color:#FCD34D;border:1px solid rgba(245,158,11,0.25);}
+.db-due-alert{background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.25);padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.db-empty{text-align:center;padding:30px;color:rgba(255,255,255,0.25);font-size:13px;}
+.db-email-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);padding:16px;margin-bottom:12px;}
+.db-email-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;}
+.db-email-preview{font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:12px;line-height:1.6;}
+.db-spec-sec{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+.db-spec-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:700;}
+.db-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--gold);color:#000;padding:12px 24px;font-size:12px;font-weight:700;letter-spacing:1px;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;}
+.db-doc-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.db-doc-row:last-child{border-bottom:none;}
+.db-doc-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:3px;}
+.db-doc-sub{font-size:11px;color:rgba(255,255,255,0.35);}
+/* LOGIN */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+#appScreen{display:none;}
+.login-box{width:100%;max-width:400px;background:var(--card);border:1px solid var(--border);padding:36px 28px;}
+.login-logo{width:48px;height:48px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#000;margin:0 auto 20px;}
+.login-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--white);text-align:center;margin-bottom:6px;}
+.login-sub{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:28px;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">A</div>
+    <div class="login-title">Apex Portal</div>
+    <div class="login-sub">Secure Access</div>
+    <div class="db-fi">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="Enter username" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="db-fi" style="margin-bottom:20px;">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="db-btn db-btn-gold" style="width:100%;padding:14px;font-size:12px;" onclick="doLogin()">Access Portal →</button>
+    <div id="loginErr" style="font-size:12px;color:#F87171;text-align:center;margin-top:10px;display:none;">Incorrect username or password.</div>
+  </div>
+</div>
+
+<!-- APP SCREEN -->
+<div id="appScreen">
+  <!-- TOP BAR -->
+  <div style="background:var(--card);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:10;">
+    <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#fff;">Apex <span style="color:var(--gold);">Portal</span></div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div style="text-align:right;"><div style="font-size:12px;color:rgba(255,255,255,0.5);" id="barName"></div><div style="font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;" id="barRole"></div></div>
+      <button onclick="doLogout()" style="background:rgba(255,255,255,0.06);border:1px solid var(--border);color:rgba(255,255,255,0.5);padding:6px 12px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;">Sign Out</button>
+    </div>
+  </div>
+  <!-- TABS -->
+  <div style="display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--card);" id="tabBar"></div>
+  <!-- CONTENT -->
+  <div style="max-width:860px;margin:0 auto;padding:20px;" id="tabContent"></div>
+</div>
+
+<div class="db-toast" id="toast"></div>
+
+<script>
+var currentUser = null;
+
+// ── LOGIN ──────────────────────────────────────────────────────────
+async function doLogin() {
+  var u = document.getElementById('loginUser').value.trim();
+  var p = document.getElementById('loginPass').value.trim();
+  var res = await fetch('/api/login', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({username: u, password: p})
+  });
+  var data = await res.json();
+  if (!data.success) {
+    document.getElementById('loginErr').style.display = 'block';
+    return;
+  }
+  document.getElementById('loginErr').style.display = 'none';
+  currentUser = data.user;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appScreen').style.display = 'block';
+  document.getElementById('barName').textContent = currentUser.name;
+  document.getElementById('barRole').textContent = currentUser.role === 'admin' ? 'Administrator' : 'Agent';
+  buildTabs();
+  renderTab(currentUser.role === 'admin' ? 'clients' : 'home');
+}
+
+async function doLogout() {
+  await fetch('/api/logout', {method:'POST'});
+  currentUser = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+// Check if already logged in
+fetch('/api/me').then(r=>r.json()).then(data=>{
+  if (data.user) {
+    currentUser = data.user;
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appScreen').style.display = 'block';
+    document.getElementById('barName').textContent = currentUser.name;
+    document.getElementById('barRole').textContent = currentUser.role === 'admin' ? 'Administrator' : 'Agent';
+    buildTabs();
+    renderTab(currentUser.role === 'admin' ? 'clients' : 'home');
+  }
+});
+
+// ── TABS ───────────────────────────────────────────────────────────
+function buildTabs() {
+  var tabs = currentUser.role === 'admin'
+    ? [{id:'clients',label:'Clients'},{id:'agents',label:'Agents'},{id:'emails',label:'Emails'},{id:'contracts',label:'Contracts'}]
+    : [{id:'home',label:'Dashboard'},{id:'submit-contract',label:'Submit Contract'},{id:'cold-leads',label:'Cold Leads'},{id:'history',label:'My History'}];
+  var bar = document.getElementById('tabBar');
+  bar.innerHTML = tabs.map(t => '<button class="db-tab" data-id="'+t.id+'" onclick="renderTab(\''+t.id+'\')">'+t.label+'</button>').join('');
+}
+
+function setActiveTab(id) {
+  document.querySelectorAll('.db-tab').forEach(function(b){
+    b.classList.toggle('active', b.dataset.id === id);
+  });
+}
+
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(function(){t.style.opacity='0';}, 2500);
+}
+
+// ── RENDER TABS ────────────────────────────────────────────────────
+async function renderTab(id) {
+  setActiveTab(id);
+  var el = document.getElementById('tabContent');
+  el.innerHTML = '<div style="padding:40px;text-align:center;color:rgba(255,255,255,0.3);">Loading...</div>';
+  if (id === 'clients') el.innerHTML = await renderClients();
+  else if (id === 'agents') el.innerHTML = await renderAgents();
+  else if (id === 'emails') el.innerHTML = renderEmails();
+  else if (id === 'contracts') el.innerHTML = await renderContracts();
+  else if (id === 'home') el.innerHTML = await renderAgentHome();
+  else if (id === 'submit-contract') el.innerHTML = renderSubmitContract();
+  else if (id === 'cold-leads') el.innerHTML = await renderColdLeads();
+  else if (id === 'history') el.innerHTML = await renderHistory();
+}
+
+// ── ADMIN: CLIENTS ─────────────────────────────────────────────────
+async function renderClients() {
+  var clients = await fetch('/api/clients').then(r=>r.json());
+  var today = new Date();
+  var alerts = '';
+  var list = '';
+  clients.forEach(function(c) {
+    if (c.dueDate) {
+      var d = new Date(c.dueDate);
+      var diff = Math.ceil((d - today) / (1000*60*60*24));
+      if (diff >= 0 && diff <= 7) {
+        alerts += '<div class="db-due-alert"><span style="font-size:18px;">🔔</span><div style="flex:1"><div style="font-size:13px;font-weight:700;color:#FCD34D;">'+c.bizName+'</div><div style="font-size:11px;color:rgba(255,255,255,0.4);">Due in '+diff+' day(s) · '+c.pkg+'</div></div><button class="db-btn db-btn-gold db-btn-sm" onclick="sendPayNotice(\''+c.id+'\')">Send Notice</button></div>';
+      }
+    }
+    var d2 = c.dueDate ? new Date(c.dueDate) : null;
+    var diff2 = d2 ? Math.ceil((d2 - today)/(1000*60*60*24)) : null;
+    var badge = diff2===null?'db-badge-blue':diff2<0?'db-badge-red':diff2<=7?'db-badge-orange':'db-badge-green';
+    var status = diff2===null?'No date':diff2<0?'Overdue':diff2<=7?'Due Soon':'Current';
+    list += '<div class="db-list-item"><div class="db-li-main"><div class="db-li-title">'+c.bizName+'</div><div class="db-li-sub">'+c.email+' · '+c.pkg+' · Due: '+(c.dueDate||'Not set')+'</div></div><span class="db-badge '+badge+'">'+status+'</span><div class="db-li-actions"><button class="db-btn db-btn-ghost db-btn-sm" onclick="sendPayNotice(\''+c.id+'\')">✓ Notice</button><button class="db-btn db-btn-red db-btn-sm" onclick="deleteClient(\''+c.id+'\')">Remove</button></div></div>';
+  });
+  var pkgs = ['Digital Foundation — $150/mo','Foundation + Marketing — $350/mo','Full Domination — $600/mo'];
+  return (alerts?'<div class="db-card"><div class="db-card-title">🔔 Payment Alerts</div>'+alerts+'</div>':'')+
+    '<div class="db-card"><div class="db-card-title">➕ Add New Client</div>'+
+    '<div class="db-2col"><div class="db-fi"><label>Business Name</label><input id="cb" placeholder="Smith Dental Care"></div><div class="db-fi"><label>Client Email</label><input id="ce" type="email" placeholder="owner@biz.com"></div></div>'+
+    '<div class="db-2col"><div class="db-fi"><label>Package</label><select id="cp">'+pkgs.map(p=>'<option>'+p+'</option>').join('')+'</select></div><div class="db-fi"><label>Due Date</label><input id="cd" type="date"></div></div>'+
+    '<button class="db-btn db-btn-gold" onclick="addClient()">Add Client →</button></div>'+
+    '<div class="db-card"><div class="db-card-title">👥 All Clients</div>'+(list||'<div class="db-empty">No clients yet.</div>')+'</div>';
+}
+
+async function addClient() {
+  var b=document.getElementById('cb').value.trim(),e=document.getElementById('ce').value.trim(),p=document.getElementById('cp').value,d=document.getElementById('cd').value;
+  if(!b||!e){toast('Please enter business name and email.');return;}
+  await fetch('/api/clients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({bizName:b,email:e,pkg:p,dueDate:d})});
+  toast('Client added.');renderTab('clients');
+}
+
+async function deleteClient(id) {
+  if(!confirm('Remove this client?'))return;
+  await fetch('/api/clients/'+id,{method:'DELETE'});
+  toast('Client removed.');renderTab('clients');
+}
+
+async function sendPayNotice(id) {
+  var clients = await fetch('/api/clients').then(r=>r.json());
+  var c = clients.find(x=>x.id===id);
+  if(!c)return;
+  var s=encodeURIComponent('Monthly Maintenance Fee Due — Apex Marketing Innovation');
+  var b=encodeURIComponent('Dear '+c.bizName+',\n\nThis is a friendly reminder that your monthly maintenance fee is due on '+c.dueDate+'.\n\nPlease visit the Apex Marketing Innovation website and tap "Make Payment" to pay securely.\n\nThank you.\n\nJermel\nApex Marketing Innovation');
+  window.open('mailto:'+c.email+'?subject='+s+'&body='+b);
+  toast('Payment notice opened.');
+}
+
+// ── ADMIN: AGENTS ─────────────────────────────────────────────────
+async function renderAgents() {
+  var agents = await fetch('/api/agents').then(r=>r.json());
+  var contracts = await fetch('/api/contracts').then(r=>r.json());
+  var cold = await fetch('/api/cold-leads').then(r=>r.json());
+  var payments = await fetch('/api/payments').then(r=>r.json());
+  var assigned = await fetch('/api/assigned-leads').then(r=>r.json());
+
+  var list = agents.length ? agents.map(function(a) {
+    var ac = contracts.filter(x=>x.agentId===a.id).length;
+    var cl = cold.filter(x=>x.agentId===a.id).length;
+    var py = payments.filter(x=>x.agentId===a.id).length;
+    return '<div class="db-list-item"><div class="db-li-main"><div class="db-li-title">'+a.name+'</div><div class="db-li-sub">@'+a.username+' · '+ac+' contracts · '+cl+' cold leads · '+py+' payments</div></div><div class="db-li-actions">'+
+      '<button class="db-btn db-btn-green db-btn-sm" onclick="sendCommission(\''+a.id+'\',\''+a.name+'\')">💲 Pay</button>'+
+      '<button class="db-btn db-btn-blue db-btn-sm" onclick="assignLead(\''+a.id+'\',\''+a.name+'\')">➕ Lead</button>'+
+      '<button class="db-btn db-btn-red db-btn-sm" onclick="removeAgent(\''+a.id+'\')">Remove</button>'+
+      '</div></div>';
+  }).join('') : '<div class="db-empty">No agents yet. Create one below.</div>';
+
+  return '<div class="db-card"><div class="db-card-title">📨 Send Documents to New Agent</div>'+
+    '<p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:14px;line-height:1.7;">Send these three documents in order before giving portal access.</p>'+
+    '<div class="db-doc-row"><div><div class="db-doc-title">Step 1 — Agent Application</div><div class="db-doc-sub">Agent fills out and signs digitally.</div></div><button class="db-btn db-btn-gold db-btn-sm" onclick="openDoc(\'application\')">Open Form</button></div>'+
+    '<div class="db-doc-row"><div><div class="db-doc-title">Step 2 — Contractor Agreement</div><div class="db-doc-sub">Both parties sign.</div></div><button class="db-btn db-btn-gold db-btn-sm" onclick="openDoc(\'contract\')">Open Agreement</button></div>'+
+    '<div class="db-doc-row"><div><div class="db-doc-title">Step 3 — Welcome Email</div><div class="db-doc-sub">Send after contract is signed.</div></div><button class="db-btn db-btn-gold db-btn-sm" onclick="openDoc(\'welcome\')">Open Email</button></div></div>'+
+    '<div class="db-card"><div class="db-card-title">➕ Create Agent Account</div>'+
+    '<div class="db-2col"><div class="db-fi"><label>Agent Full Name</label><input id="an" placeholder="Jane Smith"></div><div class="db-fi"><label>Username</label><input id="au" placeholder="janesmith24"></div></div>'+
+    '<div class="db-2col"><div class="db-fi"><label>Password</label><input id="ap" placeholder="Create their password" type="text"></div><div class="db-fi"><label>Agent Email</label><input id="ae" type="email" placeholder="agent@email.com"></div></div>'+
+    '<button class="db-btn db-btn-gold" onclick="createAgent()">Create Agent Account →</button></div>'+
+    '<div class="db-card"><div class="db-card-title">🤝 All Agents</div>'+list+'</div>';
+}
+
+async function createAgent() {
+  var n=document.getElementById('an').value.trim(),u=document.getElementById('au').value.trim(),p=document.getElementById('ap').value.trim(),e=document.getElementById('ae').value.trim();
+  if(!n||!u||!p||!e){toast('Please fill in all fields.');return;}
+  var res = await fetch('/api/agents',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,username:u,password:p,email:e})});
+  var data = await res.json();
+  if(!data.success){toast(data.error||'Error creating agent.');return;}
+  toast('Agent account created for '+n+'. They can now log in from any device.');
+  renderTab('agents');
+}
+
+async function removeAgent(id) {
+  if(!confirm('Remove this agent?'))return;
+  await fetch('/api/agents/'+id,{method:'DELETE'});
+  toast('Agent removed.');renderTab('agents');
+}
+
+async function sendCommission(agentId, agentName) {
+  var amt=prompt('Commission amount (e.g. 250):');
+  var client=prompt('Client business name:');
+  if(!amt||!client)return;
+  await fetch('/api/payments',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agentId:agentId,agentName:agentName,amount:amt,client:client})});
+  var s=encodeURIComponent('Your Commission Has Been Sent — Apex Marketing Innovation');
+  var b=encodeURIComponent('Hi '+agentName+',\n\nGreat work! Your commission of $'+amt+' for the sale of '+client+' has been sent to your Chime account.\n\nPlease allow up to 30 minutes for funds to appear.\n\nKeep up the outstanding work.\n\nJermel\nApex Marketing Innovation');
+  window.open('mailto:?subject='+s+'&body='+b);
+  toast('Commission recorded and email opened.');renderTab('agents');
+}
+
+async function assignLead(agentId, agentName) {
+  var biz=prompt('Business name for this lead:');
+  var email=prompt('Business email address:');
+  if(!biz||!email)return;
+  await fetch('/api/assigned-leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agentId:agentId,bizName:biz,email:email})});
+  toast('Lead assigned to '+agentName+'.');renderTab('agents');
+}
+
+// ── ADMIN: EMAILS ─────────────────────────────────────────────────
+var COLD_EMAILS=[
+  {title:'The Value-Add Message',subject:'Quick win we just pulled off — worth 2 minutes of your time',body:function(n,b){return 'Hi '+(n||'there')+',\n\nI wanted to share something quick — we just helped a local business generate 47 new leads in 30 days using our AI receptionist and social ad system.\n\nI believe we can do the same for '+(b||'your business')+'. Worth a quick 15-minute call this week?\n\n— Jermel, Apex Marketing Innovation\napexmarketinginnovation@gmail.com';}},
+  {title:'The Scarcity Message',subject:'One spot left this month — wanted you to have first look',body:function(n,b){return 'Hi '+(n||'there')+',\n\nWe only take on 3 new clients per month to keep our quality exceptional.\n\nI have one spot remaining. If you have been thinking about leveling up your website or lead generation for '+(b||'your business')+', this is the moment.\n\nWant me to hold that spot? Just reply YES.\n\n— Jermel, Apex Marketing Innovation\napexmarketinginnovation@gmail.com';}},
+  {title:'The Re-Engagement Message',subject:'No pressure — just didn\'t want to leave without saying this',body:function(n,b){return 'Hi '+(n||'there')+',\n\nI don\'t want to keep reaching out if the timing isn\'t right.\n\nBut businesses investing in digital marketing right now are capturing market share their competitors will never get back.\n\nWhenever you are ready, we are here.\n\n— Jermel, Apex Marketing Innovation\napexmarketinginnovation@gmail.com';}},
+  {title:'The Competitor Alert Message',subject:'Quick update about a competitor in your space',body:function(n,b){return 'Quick update —\n\nWe just launched a full marketing system for a competing business in your industry. They are already pulling in 30+ new leads every month.\n\nI would love to build something even stronger for '+(b||'your business')+' before they get too far ahead.\n\napexmarketinginnovation@gmail.com\n\n— Jermel, Apex Marketing Innovation';}},
+  {title:'Commission Sent — Agent Notification',subject:'Your Commission Has Been Sent — Apex Marketing Innovation',body:function(n,b){return 'Hi '+(n||'Agent')+',\n\nGreat work! Your commission for the sale of '+(b||'your client')+' has been sent to your Chime account.\n\nPlease allow up to 30 minutes for funds to appear.\n\nKeep up the outstanding work.\n\nJermel\nApex Marketing Innovation';}},
+  {title:'Payment Due Notice — Client',subject:'Monthly Maintenance Fee Due — Apex Marketing Innovation',body:function(n,b){return 'Dear '+(b||n||'Valued Client')+',\n\nThis is a friendly reminder that your monthly maintenance fee is due.\n\nPlease visit the Apex Marketing Innovation website and tap "Make Payment" to pay securely via Stripe.\n\nThank you for being a valued Apex client.\n\nJermel\nApex Marketing Innovation\napexmarketinginnovation@gmail.com';}}
+];
+
+function renderEmails() {
+  var cards=COLD_EMAILS.map(function(e,i){
+    return '<div class="db-email-card"><div class="db-email-title">'+e.title+'</div>'+
+      '<div class="db-email-preview">'+e.body('','').substring(0,180)+'...</div>'+
+      '<div class="db-2col" style="margin-bottom:8px;"><div class="db-fi"><label>Name</label><input id="en'+i+'" placeholder="John Smith"></div><div class="db-fi"><label>Business</label><input id="eb'+i+'" placeholder="Smith Auto"></div></div>'+
+      '<div class="db-fi"><label>Recipient Email</label><input id="ee'+i+'" type="email" placeholder="contact@business.com"></div>'+
+      '<button class="db-btn db-btn-gold db-btn-sm" onclick="sendEmail('+i+')">✓ Send This Email</button></div>';
+  }).join('');
+  return '<div class="db-card"><div class="db-card-title">🚀 Send All Cold Leads at Once</div>'+
+    '<div class="db-fi"><label>Email Addresses (comma separated)</label><textarea id="bulkEmails" placeholder="email1@biz.com, email2@biz.com..."></textarea></div>'+
+    '<div class="db-fi"><label>Select Template</label><select id="bulkTpl">'+COLD_EMAILS.map((e,i)=>'<option value="'+i+'">'+e.title+'</option>').join('')+'</select></div>'+
+    '<button class="db-btn db-btn-gold" onclick="sendBulk()">🚀 Send All Emails Now →</button></div>'+
+    '<div class="db-card"><div class="db-card-title">✓ Individual Email Templates</div>'+cards+'</div>';
+}
+
+function sendEmail(i){
+  var e=COLD_EMAILS[i],n=document.getElementById('en'+i).value.trim(),b=document.getElementById('eb'+i).value.trim(),email=document.getElementById('ee'+i).value.trim();
+  if(!email){toast('Please enter a recipient email.');return;}
+  window.open('mailto:'+email+'?subject='+encodeURIComponent(e.subject)+'&body='+encodeURIComponent(e.body(n,b)));
+  toast('Email opened for '+email);
+}
+
+function sendBulk(){
+  var raw=document.getElementById('bulkEmails').value.trim(),idx=parseInt(document.getElementById('bulkTpl').value);
+  if(!raw){toast('Please paste email addresses first.');return;}
+  var emails=raw.split(',').map(e=>e.trim()).filter(e=>e.includes('@'));
+  if(!emails.length){toast('No valid emails found.');return;}
+  var e=COLD_EMAILS[idx];
+  window.open('mailto:'+emails.join(',')+'?subject='+encodeURIComponent(e.subject)+'&body='+encodeURIComponent(e.body('','')));
+  toast('Email opened for '+emails.length+' recipients.');
+}
+
+// ── ADMIN: CONTRACTS ──────────────────────────────────────────────
+async function renderContracts() {
+  var contracts = await fetch('/api/contracts').then(r=>r.json());
+  var list = contracts.length ? contracts.map(function(c){
+    return '<div class="db-list-item"><div class="db-li-main"><div class="db-li-title">'+c.bizName+'</div><div class="db-li-sub">Agent: '+c.agentName+' · '+c.pkg+' · '+c.saleDate+'</div></div>'+
+      '<span class="db-badge '+(c.status==='approved'?'db-badge-green':'db-badge-gold')+'">'+(c.status==='approved'?'Approved':'Pending')+'</span>'+
+      '<div class="db-li-actions">'+
+      '<button class="db-btn db-btn-green db-btn-sm" onclick="approveContract(\''+c.id+'\')">✓ Approve</button>'+
+      '<button class="db-btn db-btn-blue db-btn-sm" onclick="viewSpec(\''+c.id+'\')">📋 Spec</button>'+
+      '<button class="db-btn db-btn-ghost db-btn-sm" onclick="exportContract(\''+c.id+'\')">↓ Export</button>'+
+      '</div></div>';
+  }).join('') : '<div class="db-empty">No contracts submitted yet.</div>';
+  return '<div class="db-card"><div class="db-card-title">📄 Submitted Contracts</div>'+list+'</div>';
+}
+
+async function approveContract(id){
+  await fetch('/api/contracts/'+id+'/approve',{method:'POST'});
+  toast('Contract approved.');renderTab('contracts');
+}
+
+async function viewSpec(id){
+  var contracts=await fetch('/api/contracts').then(r=>r.json());
+  var c=contracts.find(x=>x.id===id);
+  if(!c)return;
+  var s=typeof c.spec==='string'?JSON.parse(c.spec):c.spec||{};
+  alert('WEBSITE SPEC — '+c.bizName+'\n\nBusiness: '+s.bizName+'\nIndustry: '+s.industry+'\nPhone: '+s.phone+'\nAddress: '+s.address+'\nColors: '+s.colors+'\nMenu: '+s.menuPages+'\nServices: '+s.services+'\nTagline: '+s.tagline+'\nAbout: '+s.about+'\nSpecial: '+s.special);
+}
+
+async function exportContract(id){
+  var contracts=await fetch('/api/contracts').then(r=>r.json());
+  var c=contracts.find(x=>x.id===id);
+  if(!c)return;
+  var s=typeof c.spec==='string'?JSON.parse(c.spec):c.spec||{};
+  var text='APEX MARKETING INNOVATION\nCONTRACT & WEBSITE SPECIFICATION\n'+'='.repeat(40)+'\n\n';
+  text+='Agent: '+c.agentName+'\nDate: '+c.saleDate+'\nBusiness: '+c.bizName+'\nPackage: '+c.pkg+'\nSetup Fee: '+c.setupFee+'\nClient Email: '+c.clientEmail+'\n\n';
+  text+='WEBSITE SPEC\nBusiness: '+s.bizName+'\nIndustry: '+s.industry+'\nPhone: '+s.phone+'\nAddress: '+s.address+'\nColors: '+s.colors+'\nMenu: '+s.menuPages+'\nServices: '+s.services+'\nTagline: '+s.tagline+'\nAbout: '+s.about+'\nSpecial: '+s.special;
+  var blob=new Blob([text],{type:'text/plain'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Contract_'+c.bizName.replace(/\s/g,'_')+'.txt';a.click();
+  toast('Exported.');
+}
+
+// ── AGENT: HOME ───────────────────────────────────────────────────
+async function renderAgentHome(){
+  var contracts=await fetch('/api/contracts').then(r=>r.json());
+  var cold=await fetch('/api/cold-leads').then(r=>r.json());
+  var payments=await fetch('/api/payments').then(r=>r.json());
+  var assigned=await fetch('/api/assigned-leads').then(r=>r.json());
+  var total=payments.reduce((s,p)=>s+parseFloat(p.amount||0),0);
+  var leadList=assigned.length?assigned.map(l=>'<div class="db-list-item"><div class="db-li-main"><div class="db-li-title">'+l.bizName+'</div><div class="db-li-sub">'+l.email+' · '+l.assignedAt+'</div></div><span class="db-badge db-badge-blue">New Lead</span></div>').join(''):'<div class="db-empty">No leads assigned yet.</div>';
+  var payList=payments.length?payments.map(p=>'<div class="db-list-item"><div class="db-li-main"><div class="db-li-title">'+p.client+'</div><div class="db-li-sub">'+p.sentAt+'</div></div><span class="db-badge db-badge-green">$'+p.amount+' Sent</span></div>').join(''):'<div class="db-empty">No payments yet. Keep closing!</div>';
+  return '<div class="db-stat-grid">'+
+    '<div class="db-stat"><div class="db-stat-num">'+contracts.length+'</div><div class="db-stat-lbl">Contracts</div></div>'+
+    '<div class="db-stat"><div class="db-stat-num">$'+total.toLocaleString()+'</div><div class="db-stat-lbl">Total Earned</div></div>'+
+    '<div class="db-stat"><div class="db-stat-num">'+cold.length+'</div><div class="db-stat-lbl">Cold Leads</div></div>'+
+    '<div class="db-stat"><div class="db-stat-num">'+assigned.length+'</div><div class="db-stat-lbl">Leads Assigned</div></div>'+
+    '</div>'+
+    (assigned.length?'<div class="db-card"><div class="db-card-title">🎯 Leads Assigned to Me</div>'+leadList+'</div>':'')+
+    '<div class="db-card"><div class="db-card-title">💲 My Payments</div>'+payList+'</div>';
+}
+
+// ── AGENT: SUBMIT CONTRACT ────────────────────────────────────────
+function renderSubmitContract(){
+  return '<div class="db-card"><div class="db-card-title">📄 Page 1 — Sale Information</div>'+
+    '<div class="db-2col"><div class="db-fi"><label>Client Business Name</label><input id="sc_biz" placeholder="Smith Dental Care"></div><div class="db-fi"><label>Client Email</label><input id="sc_email" type="email" placeholder="owner@biz.com"></div></div>'+
+    '<div class="db-2col"><div class="db-fi"><label>Client Phone</label><input id="sc_phone" placeholder="(555) 000-0000"></div><div class="db-fi"><label>Service Package</label><select id="sc_pkg"><option>Digital Foundation — $1,000 / $150mo</option><option>Foundation + Marketing — $2,500 / $350mo</option><option>Full Domination — $4,500 / $600mo</option></select></div></div>'+
+    '<div class="db-2col"><div class="db-fi"><label>Setup Fee Collected</label><input id="sc_fee" placeholder="$1,000"></div><div class="db-fi"><label>Date of Sale</label><input id="sc_date" type="date"></div></div></div>'+
+    '<div class="db-card"><div class="db-card-title">🌐 Page 2 — Website Specification Form</div>'+
+    '<p style="font-size:12px;color:var(--gold);margin-bottom:14px;">Fill this out WITH the client at the demo. This is how Apex builds their website.</p>'+
+    '<div class="db-spec-sec"><div class="db-spec-title">Business Information</div>'+
+    '<div class="db-2col"><div class="db-fi"><label>Business Name (exact)</label><input id="ws_biz" placeholder="Smith Dental Care LLC"></div><div class="db-fi"><label>Industry / Type</label><input id="ws_ind" placeholder="Dental / Law / etc."></div></div>'+
+    '<div class="db-2col"><div class="db-fi"><label>Business Phone</label><input id="ws_ph" placeholder="(555) 000-0000"></div><div class="db-fi"><label>Business Email</label><input id="ws_em" type="email" placeholder="info@biz.com"></div></div>'+
+    '<div class="db-fi"><label>Full Address</label><input id="ws_addr" placeholder="123 Main St, Chicago, IL 60602"></div>'+
+    '<div class="db-fi"><label>Business Hours</label><input id="ws_hrs" placeholder="Mon-Fri 9AM-6PM"></div></div>'+
+    '<div class="db-spec-sec"><div class="db-spec-title">Design Preferences</div>'+
+    '<div class="db-2col"><div class="db-fi"><label>Brand Colors</label><input id="ws_col" placeholder="Navy and gold / Dark and professional"></div><div class="db-fi"><label>Logo Available?</label><select id="ws_logo"><option>Yes — client will email it</option><option>No — Apex to create one</option><option>Has logo but needs updating</option></select></div></div>'+
+    '<div class="db-fi"><label>Overall Look & Feel</label><input id="ws_feel" placeholder="Modern / Classic / Bold"></div></div>'+
+    '<div class="db-spec-sec"><div class="db-spec-title">Pages & Services</div>'+
+    '<div class="db-fi"><label>Menu Pages Needed</label><textarea id="ws_menu" placeholder="Home, About, Services, Contact..."></textarea></div>'+
+    '<div class="db-fi"><label>Services to List</label><textarea id="ws_svc" placeholder="List every service..."></textarea></div></div>'+
+    '<div class="db-spec-sec"><div class="db-spec-title">Content</div>'+
+    '<div class="db-fi"><label>Tagline / Slogan</label><input id="ws_tag" placeholder="Your Health Is Our Priority"></div>'+
+    '<div class="db-fi"><label>About the Business</label><textarea id="ws_about" placeholder="History, mission, what makes them different..."></textarea></div>'+
+    '<div class="db-fi"><label>Owner / Doctor / Attorney Name & Bio</label><textarea id="ws_bio" placeholder="Name, credentials, experience..."></textarea></div></div>'+
+    '<div class="db-spec-sec"><div class="db-spec-title">Photos & Special Requests</div>'+
+    '<div class="db-fi"><label>Photos Available?</label><select id="ws_photo"><option>Yes — professional photos</option><option>Yes — phone photos</option><option>No — use stock only</option><option>Mix of real and stock</option></select></div>'+
+    '<div class="db-fi"><label>Emergency Response System?</label><select id="ws_emerg"><option>Yes — include emergency response</option><option>No — standard site only</option></select></div>'+
+    '<div class="db-fi"><label>Special Requests</label><textarea id="ws_spec" placeholder="Anything else Apex needs to know..."></textarea></div></div>'+
+    '<button class="db-btn db-btn-gold" style="width:100%;" onclick="submitContract()">📨 Submit Contract & Spec Form →</button></div>';
+}
+
+async function submitContract(){
+  var biz=document.getElementById('sc_biz').value.trim(),email=document.getElementById('sc_email').value.trim();
+  if(!biz||!email){toast('Please enter business name and email.');return;}
+  var spec={bizName:document.getElementById('ws_biz').value.trim(),industry:document.getElementById('ws_ind').value.trim(),phone:document.getElementById('ws_ph').value.trim(),email:document.getElementById('ws_em').value.trim(),address:document.getElementById('ws_addr').value.trim(),hours:document.getElementById('ws_hrs').value.trim(),colors:document.getElementById('ws_col').value.trim(),logo:document.getElementById('ws_logo').value,feel:document.getElementById('ws_feel').value.trim(),menuPages:document.getElementById('ws_menu').value.trim(),services:document.getElementById('ws_svc').value.trim(),tagline:document.getElementById('ws_tag').value.trim(),about:document.getElementById('ws_about').value.trim(),bio:document.getElementById('ws_bio').value.trim(),photos:document.getElementById('ws_photo').value,emergency:document.getElementById('ws_emerg').value,special:document.getElementById('ws_spec').value.trim()};
+  await fetch('/api/contracts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({bizName:biz,clientEmail:email,clientPhone:document.getElementById('sc_phone').value.trim(),pkg:document.getElementById('sc_pkg').value,setupFee:document.getElementById('sc_fee').value.trim(),saleDate:document.getElementById('sc_date').value||new Date().toLocaleDateString(),spec:spec})});
+  toast('Contract submitted!');renderTab('home');
+}
+
+// ── AGENT: COLD LEADS ─────────────────────────────────────────────
+async function renderColdLeads(){
+  var cold=await fetch('/api/cold-leads').then(r=>r.json());
+  var list=cold.length?cold.map(c=>'<div class="db-list-item"><div class="db-li-main"><div class="db-li-title">'+(c.bizName||'Unknown')+'</div><div class="db-li-sub">'+c.email+' · '+c.reason+'</div></div><span class="db-badge db-badge-blue">Cold</span></div>').join(''):'<div class="db-empty">No cold leads yet.</div>';
+  return '<div class="db-card"><div class="db-card-title">❄ Submit Cold Lead</div>'+
+    '<p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">Email required. No phone numbers. Apex follows up directly.</p>'+
+    '<div class="db-2col"><div class="db-fi"><label>Business Name</label><input id="cl_biz" placeholder="Smith Auto Repair"></div><div class="db-fi"><label>Contact Email *</label><input id="cl_email" type="email" placeholder="owner@biz.com"></div></div>'+
+    '<div class="db-fi"><label>What Happened?</label><select id="cl_reason"><option>Contacted — not interested at this time</option><option>Contacted — price objection</option><option>Contacted — already has a provider</option><option>Contacted — wants to think about it</option><option>Could not reach — no response</option><option>Could not reach — no email found</option><option>Left voicemail — no callback</option></select></div>'+
+    '<div class="db-fi"><label>Notes (optional)</label><textarea id="cl_notes" placeholder="Additional notes..."></textarea></div>'+
+    '<button class="db-btn db-btn-gold" onclick="submitCold()">Submit Cold Lead →</button></div>'+
+    '<div class="db-card"><div class="db-card-title">📋 My Cold Leads</div>'+list+'</div>';
+}
+
+async function submitCold(){
+  var email=document.getElementById('cl_email').value.trim();
+  if(!email||!email.includes('@')){toast('A valid email address is required.');return;}
+  await fetch('/api/cold-leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({bizName:document.getElementById('cl_biz').value.trim(),email:email,reason:document.getElementById('cl_reason').value,notes:document.getElementById('cl_notes').value.trim()})});
+  toast('Cold lead submitted.');renderTab('cold-leads');
+}
+
+// ── AGENT: HISTORY ────────────────────────────────────────────────
+async function renderHistory(){
+  var contracts=await fetch('/api/contracts').then(r=>r.json());
+  var cold=await fetch('/api/cold-leads').then(r=>r.json());
+  var payments=await fetch('/api/payments').then(r=>r.json());
+  var assigned=await fetch('/api/assigned-leads').then(r=>r.json());
+  var total=payments.reduce((s,p)=>s+parseFloat(p.amount||0),0);
+  var cList=contracts.length?contracts.map(c=>'<div class="db-list-item"><div class="db-li-main"><div class="db-li-title">'+c.bizName+'</div><div class="db-li-sub">'+c.pkg+' · '+c.saleDate+'</div></div><span class="db-badge '+(c.status==='approved'?'db-badge-green':'db-badge-gold')+'">'+(c.status==='approved'?'Approved':'Pending')+'</span></div>').join(''):'<div class="db-empty">No contracts yet.</div>';
+  var pList=payments.length?payments.map(p=>'<div class="db-list-item"><div class="db-li-main"><div class="db-li-title">'+p.client+'</div><div class="db-li-sub">'+p.sentAt+'</div></div><span class="db-badge db-badge-green">$'+p.amount+'</span></div>').join(''):'<div class="db-empty">No payments yet.</div>';
+  var coList=cold.length?cold.map(c=>'<div class="db-list-item"><div class="db-li-main"><div class="db-li-title">'+(c.bizName||'Unknown')+'</div><div class="db-li-sub">'+c.email+' · '+c.reason+'</div></div><span class="db-badge db-badge-blue">Cold</span></div>').join(''):'<div class="db-empty">No cold leads yet.</div>';
+  var lList=assigned.length?assigned.map(l=>'<div class="db-list-item"><div class="db-li-main"><div class="db-li-title">'+l.bizName+'</div><div class="db-li-sub">'+l.email+' · '+l.assignedAt+'</div></div><span class="db-badge db-badge-blue">Assigned</span></div>').join(''):'<div class="db-empty">No leads assigned yet.</div>';
+  return '<div class="db-stat-grid">'+
+    '<div class="db-stat"><div class="db-stat-num">'+contracts.length+'</div><div class="db-stat-lbl">Contracts</div></div>'+
+    '<div class="db-stat"><div class="db-stat-num">$'+total.toLocaleString()+'</div><div class="db-stat-lbl">Total Earned</div></div>'+
+    '<div class="db-stat"><div class="db-stat-num">'+cold.length+'</div><div class="db-stat-lbl">Cold Leads</div></div>'+
+    '<div class="db-stat"><div class="db-stat-num">'+assigned.length+'</div><div class="db-stat-lbl">Assigned Leads</div></div>'+
+    '</div>'+
+    '<div class="db-card"><div class="db-card-title">📄 My Contracts</div>'+cList+'</div>'+
+    '<div class="db-card"><div class="db-card-title">💲 My Payments</div>'+pList+'</div>'+
+    '<div class="db-card"><div class="db-card-title">🎯 Leads Assigned to Me</div>'+lList+'</div>'+
+    '<div class="db-card"><div class="db-card-title">❄ My Cold Leads</div>'+coList+'</div>';
+}
+
+// ── DOCUMENTS ─────────────────────────────────────────────────────
+function openDoc(type){
+  window.open('/doc/'+type,'_blank');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Marketing Innovation — Welcome to the Team</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0A0A0A;
+  --charcoal:#141414;
+  --gold:#C9A84C;
+  --gold2:#E8C97A;
+  --white:#fff;
+  --gray:#8A8A8A;
+  --border:#2E2E2E;
+  --red:#B91C1C;
+  --green:#16A34A;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);min-height:100vh;}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,var(--charcoal),#1a1208);border-bottom:1px solid rgba(201,168,76,0.2);padding:28px 24px 24px;}
+.hdr-top{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+.emblem{width:48px;height:48px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--black);flex-shrink:0;}
+.hdr-co{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--white);}
+.hdr-co span{color:var(--gold);}
+.doc-subtitle{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.doc-title{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,6vw,36px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:14px;}
+.doc-title em{color:var(--gold2);font-style:italic;}
+.doc-note{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;padding:14px 16px;background:rgba(201,168,76,0.06);border-left:3px solid var(--gold);}
+.doc-note strong{color:var(--gold2);}
+
+/* PROGRESS */
+.prog-wrap{background:rgba(255,255,255,0.05);height:4px;}
+.prog-bar{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;transition:width 0.5s;}
+
+/* BODY */
+.doc-body{max-width:680px;margin:0 auto;padding:28px 20px 60px;}
+
+/* AGENT NAME BLOCK */
+.name-block{background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:22px 20px;margin-bottom:28px;}
+.name-block h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:14px;}
+.field-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.35);font-weight:600;display:block;margin-bottom:6px;}
+.name-input{width:100%;background:rgba(255,255,255,0.06);border:none;border-bottom:1px solid var(--border);color:var(--white);padding:11px 0;font-size:15px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.3s;}
+.name-input:focus{border-bottom-color:var(--gold);}
+.name-input::placeholder{color:rgba(255,255,255,0.2);}
+.err-msg{font-size:11px;color:#F87171;margin-top:5px;display:none;}
+.err-msg.show{display:block;}
+
+/* EMAIL PREVIEW */
+.email-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);margin-bottom:28px;overflow:hidden;}
+.email-meta{background:rgba(255,255,255,0.04);border-bottom:1px solid var(--border);padding:14px 20px;}
+.email-meta-row{display:flex;gap:10px;font-size:12px;margin-bottom:6px;align-items:baseline;}
+.email-meta-row:last-child{margin-bottom:0;}
+.email-meta-label{color:var(--gold);font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:10px;flex-shrink:0;width:50px;}
+.email-meta-val{color:rgba(255,255,255,0.6);}
+.email-meta-val.subject{color:var(--white);font-weight:600;font-size:13px;}
+.email-body{padding:24px 20px;}
+
+/* EMAIL CONTENT STYLES */
+.email-greeting{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:16px;}
+.email-greeting span{color:var(--gold2);}
+.email-para{font-size:14px;color:rgba(255,255,255,0.75);line-height:1.85;margin-bottom:18px;}
+.email-para strong{color:var(--white);}
+
+.email-section-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.email-section-title::before{content:'';width:3px;height:18px;background:var(--gold);display:block;flex-shrink:0;}
+
+/* NEXT STEPS */
+.steps-list{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.step-row{display:flex;gap:14px;padding:14px 16px;background:rgba(255,255,255,0.03);border:1px solid var(--border);align-items:flex-start;}
+.step-num{width:26px;height:26px;background:var(--gold);color:var(--black);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.step-text{font-size:13px;color:rgba(255,255,255,0.75);line-height:1.65;}
+.step-text strong{color:var(--white);}
+.onboard-link-box{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);padding:14px 16px;margin:10px 0 4px;display:flex;align-items:center;gap:10px;}
+.onboard-link-icon{font-size:18px;flex-shrink:0;}
+.onboard-link-text{font-size:12px;color:var(--gold);font-weight:600;letter-spacing:0.5px;word-break:break-all;}
+
+/* REMINDERS */
+.reminders-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
+.reminder-row{display:flex;gap:12px;padding:12px 16px;background:rgba(255,255,255,0.02);border-left:2px solid var(--gold);align-items:flex-start;}
+.reminder-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;flex-shrink:0;margin-top:5px;}
+.reminder-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.65;}
+.reminder-text strong{color:var(--white);}
+
+/* CODE OF CONDUCT */
+.conduct-block{background:rgba(255,255,255,0.02);border:1px solid var(--border);padding:18px 20px;margin-bottom:24px;}
+.conduct-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:12px;}
+.conduct-list{display:flex;flex-direction:column;gap:8px;}
+.conduct-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:rgba(255,255,255,0.65);line-height:1.55;}
+.conduct-check{color:var(--gold);font-size:14px;flex-shrink:0;margin-top:1px;}
+
+/* CONTACT BLOCK */
+.contact-block{background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:20px;margin-bottom:24px;}
+.contact-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:14px;}
+.contact-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.contact-row:last-child{margin-bottom:0;}
+.contact-icon{width:32px;height:32px;background:rgba(201,168,76,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.contact-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:2px;}
+.contact-val{font-size:13px;color:var(--white);font-weight:500;}
+.contact-val a{color:var(--white);text-decoration:none;}
+
+/* SIGN OFF */
+.signoff{border-top:1px solid var(--border);padding-top:20px;margin-top:4px;}
+.signoff-text{font-size:14px;color:rgba(255,255,255,0.6);margin-bottom:14px;line-height:1.7;}
+.signoff-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--white);}
+.signoff-title{font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
+
+/* SUBMIT */
+.submit-wrap{margin-top:8px;}
+.submit-btn{width:100%;background:var(--gold);color:var(--black);padding:18px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.submit-btn:hover{background:var(--gold2);}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.submit-note{font-size:11px;color:var(--gray);text-align:center;margin-top:10px;line-height:1.6;}
+
+/* SUCCESS */
+.success-screen{display:none;text-align:center;padding:60px 24px;}
+.success-icon{font-size:56px;display:block;margin-bottom:20px;}
+.success-screen h2{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--white);margin-bottom:12px;}
+.success-screen p{font-size:14px;color:var(--gray);line-height:1.75;max-width:420px;margin:0 auto 16px;}
+.success-ref{font-size:11px;color:var(--gold);letter-spacing:2px;display:block;margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="emblem">A</div>
+    <div class="hdr-co">Apex <span>Marketing Innovation</span></div>
+  </div>
+  <div class="doc-subtitle">Agent Welcome</div>
+  <h1 class="doc-title">Welcome to the <em>Team</em></h1>
+  <div class="doc-note">
+    <strong>Instructions:</strong> Enter the new agent's name below. The welcome email will be personalized with their name automatically. Tap <strong>Send Welcome Email</strong> to deliver it directly to the agent.
+  </div>
+</div>
+<div class="prog-wrap"><div class="prog-bar" id="progBar"></div></div>
+
+<div class="doc-body">
+  <div id="welcomeForm">
+
+    <!-- AGENT INFO -->
+    <div class="name-block">
+      <h3>Agent Information</h3>
+      <div style="margin-bottom:16px;">
+        <span class="field-label">Agent Full Name</span>
+        <input type="text" id="agentName" class="name-input" placeholder="Enter agent's full name" oninput="updatePreview()">
+        <div class="err-msg" id="err-agentName">Please enter the agent's name.</div>
+      </div>
+      <div>
+        <span class="field-label">Agent Email Address</span>
+        <input type="email" id="agentEmail" class="name-input" placeholder="agent@email.com">
+        <div class="err-msg" id="err-agentEmail">Please enter a valid email address.</div>
+      </div>
+    </div>
+
+    <!-- EMAIL PREVIEW -->
+    <div class="email-card">
+      <div class="email-meta">
+        <div class="email-meta-row">
+          <span class="email-meta-label">To</span>
+          <span class="email-meta-val" id="previewTo">Agent Email Address</span>
+        </div>
+        <div class="email-meta-row">
+          <span class="email-meta-label">From</span>
+          <span class="email-meta-val">apexmarketinginnovationagent@gmail.com</span>
+        </div>
+        <div class="email-meta-row">
+          <span class="email-meta-label">Subject</span>
+          <span class="email-meta-val subject">Welcome to Apex Marketing Innovation — Next Steps</span>
+        </div>
+      </div>
+
+      <div class="email-body">
+        <!-- GREETING -->
+        <div class="email-greeting">Dear <span id="previewName">Agent Name</span>,</div>
+        <p class="email-para">Welcome to the team.</p>
+        <p class="email-para">Your contract has been received and accepted. You are now an <strong>official Apex Marketing Innovation Agent.</strong></p>
+
+        <!-- NEXT STEPS -->
+        <div class="email-section-title">Next Steps</div>
+        <div class="steps-list">
+          <div class="step-row">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>Complete the training section</strong> before making your first contact.</div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>Review all sales scripts</strong> and demo materials.</div>
+          </div>
+        </div>
+
+        <!-- IMPORTANT REMINDERS -->
+        <div class="email-section-title">Important Reminders</div>
+        <div class="reminders-list">
+          <div class="reminder-row">
+            <div class="reminder-dot"></div>
+            <div class="reminder-text">You are on a <strong>5-day probationary period.</strong> Secure your first paying client within 5 working days.</div>
+          </div>
+          <div class="reminder-row">
+            <div class="reminder-dot"></div>
+            <div class="reminder-text">After probation, your quota is <strong>3 paying clients per week.</strong></div>
+          </div>
+          <div class="reminder-row">
+            <div class="reminder-dot"></div>
+            <div class="reminder-text">You earn <strong>25% commission on every sale.</strong> No limit.</div>
+          </div>
+          <div class="reminder-row">
+            <div class="reminder-dot"></div>
+            <div class="reminder-text">Commission paid <strong>weekly</strong> after client payment is confirmed.</div>
+          </div>
+          <div class="reminder-row">
+            <div class="reminder-dot"></div>
+            <div class="reminder-text">You can terminate at any time. The company can terminate at any time.</div>
+          </div>
+        </div>
+
+        <!-- CODE OF CONDUCT -->
+        <div class="conduct-block">
+          <div class="conduct-title">Code of Conduct</div>
+          <div class="conduct-list">
+            <div class="conduct-item"><span class="conduct-check">✦</span>Represent Apex professionally at all times</div>
+            <div class="conduct-item"><span class="conduct-check">✦</span>Use only approved scripts and materials</div>
+            <div class="conduct-item"><span class="conduct-check">✦</span>Never make false or misleading claims</div>
+            <div class="conduct-item"><span class="conduct-check">✦</span>Respect all client confidentiality</div>
+            <div class="conduct-item"><span class="conduct-check">✦</span>Submit sales and payments promptly</div>
+          </div>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="contact-block">
+          <div class="contact-title">Contact — If you have any questions, email us directly.</div>
+          <div class="contact-row">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-val"><a href="mailto:apexmarketinginnovationagent@gmail.com">apexmarketinginnovationagent@gmail.com</a></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIGN OFF -->
+        <div class="signoff">
+          <p class="signoff-text">Let's build something great.</p>
+          <div class="signoff-name">Jermel</div>
+          <div class="signoff-title">Apex Marketing Innovation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-wrap">
+      <button class="submit-btn" id="submitBtn" onclick="sendWelcome()">
+        ✉️ &nbsp;Send Welcome Email
+      </button>
+      <p class="submit-note">Email will be addressed to the agent and sent from <strong>apexmarketinginnovationagent@gmail.com</strong></p>
+    </div>
+
+  </div><!-- end welcomeForm -->
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <span class="success-icon"></span>
+    <h2>Welcome Email Sent</h2>
+    <p>The welcome email has been sent to <span id="successName" style="color:var(--gold2);font-weight:600;"></span>. They are now an official Apex Marketing Innovation Agent.</p>
+    <span class="success-ref" id="successRef"></span>
+    <p style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.7;">Make sure to assign their first lead within 24 hours and send them access to the Agent Onboarding Portal.</p>
+  </div>
+
+</div>
+
+<script>
+// ── LIVE PREVIEW ──────────────────────────────────────────────────
+function updatePreview(){
+  const name=document.getElementById('agentName').value.trim();
+  const email=document.getElementById('agentEmail').value.trim();
+  document.getElementById('previewName').textContent=name||'Agent Name';
+  document.getElementById('previewTo').textContent=email||'Agent Email Address';
+}
+document.getElementById('agentEmail').addEventListener('input',updatePreview);
+
+// ── PROGRESS ──────────────────────────────────────────────────────
+function updateProg(){
+  let filled=0;
+  if(document.getElementById('agentName').value.trim())filled++;
+  if(document.getElementById('agentEmail').value.trim())filled++;
+  document.getElementById('progBar').style.width=(filled/2*100)+'%';
+}
+setInterval(updateProg,400);
+
+// ── ERRORS ────────────────────────────────────────────────────────
+function showErr(id){document.getElementById('err-'+id).classList.add('show');}
+function hideErr(id){document.getElementById('err-'+id).classList.remove('show');}
+
+// ── VALIDATE ──────────────────────────────────────────────────────
+function validate(){
+  let ok=true;
+  const name=document.getElementById('agentName').value.trim();
+  if(!name){showErr('agentName');ok=false;}else{hideErr('agentName');}
+  const email=document.getElementById('agentEmail').value.trim();
+  if(!email||!/\S+@\S+\.\S+/.test(email)){showErr('agentEmail');ok=false;}else{hideErr('agentEmail');}
+  return ok;
+}
+
+// ── SEND ──────────────────────────────────────────────────────────
+function sendWelcome(){
+  if(!validate())return;
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.innerHTML='⏳ &nbsp;Sending...';
+
+  const name=document.getElementById('agentName').value.trim();
+  const agentEmail=document.getElementById('agentEmail').value.trim();
+  const ref='WLC-'+Date.now().toString().slice(-7);
+
+  const subject=encodeURIComponent('Welcome to Apex Marketing Innovation — Next Steps');
+  const body=encodeURIComponent(
+'Dear '+name+',\n\n'+
+'Welcome to the team.\n\n'+
+'Your contract has been received and accepted. You are now an official Apex Marketing Innovation Agent.\n\n'+
+'NEXT STEPS:\n\n'+
+'1. Complete the training section before making your first contact.\n\n'+
+'2. Review all sales scripts and demo materials.\n\n'+
+'IMPORTANT REMINDERS:\n\n'+
+'• You are on a 5-day probationary period. Secure your first paying client within 5 working days.\n'+
+'• After probation, your quota is 3 paying clients per week.\n'+
+'• You earn 25% commission on every sale. No limit.\n'+
+'• Commission paid weekly after client payment is confirmed.\n'+
+'• You can terminate at any time. The company can terminate at any time.\n\n'+
+'CODE OF CONDUCT:\n\n'+
+'• Represent Apex professionally at all times\n'+
+'• Use only approved scripts and materials\n'+
+'• Never make false or misleading claims\n'+
+'• Respect all client confidentiality\n'+
+'• Submit sales and payments promptly\n\n'+
+'CONTACT:\n\n'+
+'If you have any questions, email us directly.\n'+
+'apexmarketinginnovationagent@gmail.com\n\n'+
+'Let\'s build something great.\n\n'+
+'Jermel\n'+
+'Apex Marketing Innovation\n\n'+
+'— Ref: '+ref
+  );
+
+  window.open('mailto:'+agentEmail+'?subject='+subject+'&body='+body);
+
+  setTimeout(()=>{
+    document.getElementById('welcomeForm').style.display='none';
+    const s=document.getElementById('successScreen');
+    s.style.display='block';
+    document.getElementById('successName').textContent=name;
+    document.getElementById('successRef').textContent='Reference: '+ref;
+  },800);
+}
+</script>
+</body>
+</html>

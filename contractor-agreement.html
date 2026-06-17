@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Marketing Innovation — Independent Contractor Agreement</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0A0A0A;
+  --charcoal:#141414;
+  --gold:#C9A84C;
+  --gold2:#E8C97A;
+  --white:#fff;
+  --gray:#8A8A8A;
+  --border:#2E2E2E;
+  --red:#B91C1C;
+  --green:#16A34A;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);min-height:100vh;}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,var(--charcoal),#1a1208);border-bottom:1px solid rgba(201,168,76,0.2);padding:28px 24px 24px;}
+.hdr-top{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+.emblem{width:48px;height:48px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--black);flex-shrink:0;}
+.hdr-co{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--white);}
+.hdr-co span{color:var(--gold);}
+.doc-title{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,6vw,36px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:10px;}
+.doc-title em{color:var(--gold2);font-style:italic;}
+.doc-subtitle{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.doc-note{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;padding:14px 16px;background:rgba(201,168,76,0.06);border-left:3px solid var(--gold);}
+.doc-note strong{color:var(--gold2);}
+
+/* PROGRESS */
+.prog-wrap{background:rgba(255,255,255,0.05);height:4px;}
+.prog-bar{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;transition:width 0.5s;}
+
+/* BODY */
+.doc-body{max-width:680px;margin:0 auto;padding:28px 20px 60px;}
+
+/* PARTIES BLOCK */
+.parties-block{background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:22px 20px;margin-bottom:28px;}
+.parties-block h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:16px;letter-spacing:0.5px;}
+.party-row{margin-bottom:14px;}
+.party-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px;display:block;}
+.party-val{font-size:14px;color:var(--white);font-weight:500;}
+.party-input{width:100%;background:rgba(255,255,255,0.06);border:none;border-bottom:1px solid var(--border);color:var(--white);padding:10px 0;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.3s;}
+.party-input:focus{border-bottom-color:var(--gold);}
+.party-input::placeholder{color:rgba(255,255,255,0.2);}
+.date-input{background:rgba(255,255,255,0.06);border:none;border-bottom:1px solid var(--border);color:var(--white);padding:10px 0;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.3s;width:200px;}
+.date-input:focus{border-bottom-color:var(--gold);}
+.date-input::-webkit-calendar-picker-indicator{filter:invert(0.5);}
+
+/* TERMS */
+.terms-block{margin-bottom:28px;}
+.terms-block h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--white);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.term-item{display:flex;gap:16px;padding:18px 16px;background:rgba(255,255,255,0.02);border:1px solid var(--border);margin-bottom:10px;transition:border-color 0.3s;}
+.term-item:hover{border-color:rgba(201,168,76,0.2);}
+.term-num{width:28px;height:28px;background:var(--gold);color:var(--black);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.term-content{}
+.term-title{font-size:14px;font-weight:700;color:var(--gold2);margin-bottom:6px;}
+.term-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.75;}
+.term-text strong{color:var(--white);}
+.comm-list{margin-top:10px;display:flex;flex-direction:column;gap:6px;}
+.comm-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(201,168,76,0.06);border-left:2px solid var(--gold);}
+.comm-item-text{font-size:12px;color:rgba(255,255,255,0.75);font-weight:500;}
+.comm-item-amt{font-size:13px;font-weight:700;color:var(--gold);margin-left:auto;white-space:nowrap;}
+
+/* SIGNATURE SECTION */
+.sig-section{margin-bottom:28px;}
+.sig-section h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--white);margin-bottom:6px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.sig-section p{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:20px;line-height:1.6;}
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.sig-block{display:flex;flex-direction:column;gap:8px;}
+.sig-block-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+.sig-block-name{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px;}
+.sig-wrap{background:rgba(255,255,255,0.04);border:1px solid var(--border);position:relative;}
+.sig-canvas{width:100%;height:120px;display:block;cursor:crosshair;touch-action:none;}
+.sig-toolbar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-top:1px solid var(--border);}
+.sig-clear{background:rgba(185,28,28,0.15);border:1px solid rgba(185,28,28,0.3);color:#F87171;padding:5px 12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.sig-hint{font-size:10px;color:var(--gray);}
+.sig-placeholder{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;color:rgba(255,255,255,0.15);pointer-events:none;text-align:center;transition:opacity 0.3s;white-space:nowrap;}
+.sig-date-row{margin-top:8px;}
+.sig-date-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:5px;display:block;}
+.sig-date-input{width:100%;background:rgba(255,255,255,0.06);border:none;border-bottom:1px solid var(--border);color:var(--white);padding:9px 0;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.3s;}
+.sig-date-input:focus{border-bottom-color:var(--gold);}
+.sig-date-input::-webkit-calendar-picker-indicator{filter:invert(0.5);}
+
+/* ERRORS */
+.err-msg{font-size:11px;color:#F87171;margin-top:5px;display:none;}
+.err-msg.show{display:block;}
+.field-error{border-color:#F87171!important;}
+
+/* SUBMIT */
+.submit-wrap{margin-top:8px;}
+.submit-btn{width:100%;background:var(--gold);color:var(--black);padding:18px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.submit-btn:hover{background:var(--gold2);}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.submit-note{font-size:11px;color:var(--gray);text-align:center;margin-top:10px;line-height:1.6;}
+
+/* SUCCESS */
+.success-screen{display:none;text-align:center;padding:60px 24px;}
+.success-icon{font-size:56px;display:block;margin-bottom:20px;}
+.success-screen h2{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--white);margin-bottom:12px;}
+.success-screen p{font-size:14px;color:var(--gray);line-height:1.75;max-width:420px;margin:0 auto 16px;}
+.success-ref{font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:20px;display:block;}
+.dl-btn{display:inline-block;margin:6px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:var(--gold);padding:11px 20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.25s;}
+.dl-btn:hover{background:var(--gold);color:var(--black);}
+
+@media(max-width:520px){
+  .sig-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="emblem">A</div>
+    <div class="hdr-co">Apex <span>Marketing Innovation</span></div>
+  </div>
+  <div class="doc-subtitle">Legal Document</div>
+  <h1 class="doc-title">Independent Contractor <em>Agreement</em></h1>
+  <div class="doc-note">
+    <strong>Instructions:</strong> Read all terms carefully. Enter the agent's full name and today's date. Both parties sign digitally. Tap <strong>Submit Agreement</strong> to send to Apex Marketing Innovation.
+  </div>
+</div>
+<div class="prog-wrap"><div class="prog-bar" id="progBar"></div></div>
+
+<div class="doc-body">
+  <div id="agreementForm">
+
+    <!-- PARTIES -->
+    <div class="parties-block">
+      <h3>Agreement Parties</h3>
+      <div class="party-row">
+        <span class="party-label">Date of Agreement</span>
+        <input type="date" id="agreementDate" class="date-input">
+        <div class="err-msg" id="err-agreementDate">Please enter the agreement date.</div>
+      </div>
+      <div class="party-row">
+        <span class="party-label">Company</span>
+        <div class="party-val">Apex Marketing Innovation</div>
+      </div>
+      <div class="party-row">
+        <span class="party-label">Agent Full Name</span>
+        <input type="text" id="agentName" class="party-input" placeholder="Enter agent's full legal name">
+        <div class="err-msg" id="err-agentName">Please enter the agent's full name.</div>
+      </div>
+      <div class="party-row">
+        <span class="party-label">Agent Email Address</span>
+        <input type="email" id="agentEmail" class="party-input" placeholder="agent@email.com">
+        <div class="err-msg" id="err-agentEmail">Please enter a valid email address.</div>
+      </div>
+    </div>
+
+    <!-- TERMS -->
+    <div class="terms-block">
+      <h3>Terms &amp; Conditions</h3>
+
+      <div class="term-item">
+        <div class="term-num">1</div>
+        <div class="term-content">
+          <div class="term-title">Independent Contractor</div>
+          <div class="term-text">Agent is an <strong>independent contractor, not an employee.</strong> Agent pays own taxes and expenses.</div>
+        </div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-num">2</div>
+        <div class="term-content">
+          <div class="term-title">Term</div>
+          <div class="term-text"><strong>Month-to-month.</strong> Either party may terminate at any time, for any reason.</div>
+        </div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-num">3</div>
+        <div class="term-content">
+          <div class="term-title">Probationary Period</div>
+          <div class="term-text">First <strong>5 working days.</strong> Agent must secure first paying client. <strong>Failure = automatic termination.</strong></div>
+        </div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-num">4</div>
+        <div class="term-content">
+          <div class="term-title">Quota</div>
+          <div class="term-text">After probation, agent must secure <strong>3 paying clients per week.</strong> One warning. <strong>Second failure = termination.</strong></div>
+        </div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-num">5</div>
+        <div class="term-content">
+          <div class="term-title">Commission</div>
+          <div class="term-text"><strong>25% of every sale</strong> agent personally closes. No earning limit. Paid weekly after client payment is confirmed.</div>
+          <div class="comm-list">
+            <div class="comm-item"><span class="comm-item-text">Service 1 — $1,000 setup</span><span class="comm-item-amt">$250 commission</span></div>
+            <div class="comm-item"><span class="comm-item-text">Service 2 — $2,500 setup</span><span class="comm-item-amt">$625 commission</span></div>
+            <div class="comm-item"><span class="comm-item-text">Service 3 — $4,500 setup</span><span class="comm-item-amt">$1,125 commission</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-num">6</div>
+        <div class="term-content">
+          <div class="term-title">Non-Compete</div>
+          <div class="term-text">For duration of agreement and <strong>1 year after termination</strong>, agent cannot work for any competing marketing agency offering similar services (website design, AI receptionist, social media advertising).</div>
+        </div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-num">7</div>
+        <div class="term-content">
+          <div class="term-title">Non-Solicitation</div>
+          <div class="term-text">For <strong>1 year after termination</strong>, agent cannot solicit any Apex client for themselves or a competitor.</div>
+        </div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-num">8</div>
+        <div class="term-content">
+          <div class="term-title">Code of Conduct</div>
+          <div class="term-text">Agent agrees to represent Apex professionally, use approved materials only, never make false claims, respect client confidentiality, submit sales promptly, and communicate respectfully. <strong>Violation = immediate termination.</strong></div>
+        </div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-num">9</div>
+        <div class="term-content">
+          <div class="term-title">Client Ownership</div>
+          <div class="term-text">All client relationships and leads belong <strong>exclusively to Apex.</strong> Agent has no ownership rights.</div>
+        </div>
+      </div>
+
+      <div class="term-item">
+        <div class="term-num">10</div>
+        <div class="term-content">
+          <div class="term-title">Entire Agreement</div>
+          <div class="term-text">This is the full agreement. <strong>No changes unless signed by both parties.</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIGNATURES -->
+    <div class="sig-section">
+      <h3>Signatures</h3>
+      <p>By signing below, both parties agree to all terms and conditions stated in this Independent Contractor Agreement. Digital signatures are legally binding.</p>
+
+      <div class="sig-grid">
+
+        <!-- COMPANY SIG -->
+        <div class="sig-block">
+          <div class="sig-block-label">Company Signature</div>
+          <div class="sig-block-name">Apex Marketing Innovation</div>
+          <div class="sig-wrap">
+            <canvas class="sig-canvas" id="companySig" width="300" height="120"></canvas>
+            <div class="sig-placeholder" id="coSigPlaceholder">✍️ Sign here</div>
+            <div class="sig-toolbar">
+              <div class="sig-hint">Draw signature</div>
+              <button class="sig-clear" onclick="clearSig('companySig','coSigPlaceholder')">Clear</button>
+            </div>
+          </div>
+          <div class="err-msg" id="err-companySig">Company signature required.</div>
+          <div class="sig-date-row">
+            <span class="sig-date-label">Date</span>
+            <input type="date" id="companyDate" class="sig-date-input">
+            <div class="err-msg" id="err-companyDate">Please enter the date.</div>
+          </div>
+        </div>
+
+        <!-- AGENT SIG -->
+        <div class="sig-block">
+          <div class="sig-block-label">Agent Signature</div>
+          <div class="sig-block-name" id="agentSigName">Agent Full Name</div>
+          <div class="sig-wrap">
+            <canvas class="sig-canvas" id="agentSig" width="300" height="120"></canvas>
+            <div class="sig-placeholder" id="agSigPlaceholder">✍️ Sign here</div>
+            <div class="sig-toolbar">
+              <div class="sig-hint">Draw signature</div>
+              <button class="sig-clear" onclick="clearSig('agentSig','agSigPlaceholder')">Clear</button>
+            </div>
+          </div>
+          <div class="err-msg" id="err-agentSig">Agent signature required.</div>
+          <div class="sig-date-row">
+            <span class="sig-date-label">Date</span>
+            <input type="date" id="agentDate" class="sig-date-input">
+            <div class="err-msg" id="err-agentDate">Please enter the date.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-wrap">
+      <button class="submit-btn" id="submitBtn" onclick="submitAgreement()">
+        ✉️ &nbsp;Submit Signed Agreement
+      </button>
+      <p class="submit-note">Signed agreement will be sent to <strong>apexmarketinginnovationagent@gmail.com</strong><br>Both signature images available for download after submission.</p>
+    </div>
+
+  </div><!-- end agreementForm -->
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <span class="success-icon">✅</span>
+    <h2>Agreement Submitted</h2>
+    <p>The signed Independent Contractor Agreement has been sent to Apex Marketing Innovation. Keep a copy of your signature images for your records.</p>
+    <span class="success-ref" id="successRef"></span>
+    <div id="dlButtons"></div>
+  </div>
+
+</div>
+
+<script>
+// ── PROGRESS ──────────────────────────────────────────────────────
+function updateProg(){
+  const fields=['agreementDate','agentName','agentEmail'];
+  let filled=fields.filter(id=>{const e=document.getElementById(id);return e&&e.value.trim()!=='';}).length;
+  if(!sigEmpty('companySig'))filled++;
+  if(!sigEmpty('agentSig'))filled++;
+  if(document.getElementById('companyDate').value)filled++;
+  if(document.getElementById('agentDate').value)filled++;
+  document.getElementById('progBar').style.width=Math.round((filled/7)*100)+'%';
+}
+setInterval(updateProg,500);
+
+// Update agent name label live
+document.getElementById('agentName').addEventListener('input',function(){
+  const label=document.getElementById('agentSigName');
+  label.textContent=this.value.trim()||'Agent Full Name';
+});
+
+// ── SIGNATURE ENGINE ──────────────────────────────────────────────
+const canvases={};
+const drawing={};
+
+function initCanvas(id){
+  const canvas=document.getElementById(id);
+  const ctx=canvas.getContext('2d');
+  const ratio=window.devicePixelRatio||1;
+  const rect=canvas.getBoundingClientRect();
+  canvas.width=(rect.width||300)*ratio;
+  canvas.height=120*ratio;
+  canvas.style.height='120px';
+  ctx.scale(ratio,ratio);
+  ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=2;ctx.strokeStyle='#E8C97A';
+  canvases[id]=ctx;
+  drawing[id]=false;
+
+  function getPos(e){
+    const r=canvas.getBoundingClientRect();
+    if(e.touches)return{x:(e.touches[0].clientX-r.left),y:(e.touches[0].clientY-r.top)};
+    return{x:e.clientX-r.left,y:e.clientY-r.top};
+  }
+  canvas.addEventListener('mousedown',e=>{drawing[id]=true;const p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});
+  canvas.addEventListener('mousemove',e=>{if(!drawing[id])return;const p=getPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();markSig(id);});
+  canvas.addEventListener('mouseup',()=>drawing[id]=false);
+  canvas.addEventListener('mouseleave',()=>drawing[id]=false);
+  canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing[id]=true;const p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});
+  canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing[id])return;const p=getPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();markSig(id);},{passive:false});
+  canvas.addEventListener('touchend',()=>drawing[id]=false);
+}
+
+function markSig(id){
+  const placeholderId=id==='companySig'?'coSigPlaceholder':'agSigPlaceholder';
+  document.getElementById(placeholderId).style.opacity='0';
+  hideErr(id);
+}
+
+function clearSig(canvasId,placeholderId){
+  const canvas=document.getElementById(canvasId);
+  const ctx=canvases[canvasId];
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  document.getElementById(placeholderId).style.opacity='1';
+}
+
+function sigEmpty(id){
+  const canvas=document.getElementById(id);
+  const ctx=canvases[id];
+  if(!ctx)return true;
+  const data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+  for(let i=3;i<data.length;i+=4){if(data[i]>0)return false;}
+  return true;
+}
+
+initCanvas('companySig');
+initCanvas('agentSig');
+
+// ── ERRORS ────────────────────────────────────────────────────────
+function showErr(id){const e=document.getElementById('err-'+id);if(e)e.classList.add('show');}
+function hideErr(id){const e=document.getElementById('err-'+id);if(e)e.classList.remove('show');}
+
+// ── VALIDATE ──────────────────────────────────────────────────────
+function validate(){
+  let ok=true;
+  if(!document.getElementById('agreementDate').value){showErr('agreementDate');ok=false;}else{hideErr('agreementDate');}
+  const name=document.getElementById('agentName').value.trim();
+  if(!name){showErr('agentName');ok=false;}else{hideErr('agentName');}
+  const email=document.getElementById('agentEmail').value.trim();
+  if(!email||!/\S+@\S+\.\S+/.test(email)){showErr('agentEmail');ok=false;}else{hideErr('agentEmail');}
+  if(sigEmpty('companySig')){showErr('companySig');ok=false;}else{hideErr('companySig');}
+  if(sigEmpty('agentSig')){showErr('agentSig');ok=false;}else{hideErr('agentSig');}
+  if(!document.getElementById('companyDate').value){showErr('companyDate');ok=false;}else{hideErr('companyDate');}
+  if(!document.getElementById('agentDate').value){showErr('agentDate');ok=false;}else{hideErr('agentDate');}
+  return ok;
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────
+function submitAgreement(){
+  if(!validate()){
+    const firstErr=document.querySelector('.err-msg.show');
+    if(firstErr)firstErr.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.innerHTML='⏳ &nbsp;Preparing...';
+
+  const agDate=document.getElementById('agreementDate').value;
+  const agentName=document.getElementById('agentName').value.trim();
+  const agentEmail=document.getElementById('agentEmail').value.trim();
+  const coDate=document.getElementById('companyDate').value;
+  const agSigDate=document.getElementById('agentDate').value;
+  const ref='AGR-'+Date.now().toString().slice(-7);
+  const submitted=new Date().toLocaleString();
+
+  const coSigData=document.getElementById('companySig').toDataURL('image/png');
+  const agSigData=document.getElementById('agentSig').toDataURL('image/png');
+
+  const body=
+'APEX MARKETING INNOVATION\n'+
+'INDEPENDENT CONTRACTOR AGREEMENT\n'+
+'Reference: '+ref+'\n'+
+'Submitted: '+submitted+'\n'+
+'================================================\n\n'+
+'AGREEMENT DATE: '+agDate+'\n'+
+'COMPANY: Apex Marketing Innovation\n'+
+'AGENT: '+agentName+'\n'+
+'AGENT EMAIL: '+agentEmail+'\n\n'+
+'TERMS AGREED:\n'+
+'1. Independent Contractor: Agent pays own taxes and expenses.\n'+
+'2. Term: Month-to-month. Either party may terminate at any time.\n'+
+'3. Probationary Period: First 5 working days. Must secure first paying client.\n'+
+'4. Quota: 3 paying clients per week after probation. Second failure = termination.\n'+
+'5. Commission: 25% per sale. Service 1=$250 | Service 2=$625 | Service 3=$1,125.\n'+
+'6. Non-Compete: During agreement + 1 year after termination.\n'+
+'7. Non-Solicitation: 1 year after termination.\n'+
+'8. Code of Conduct: Professional conduct required. Violation = immediate termination.\n'+
+'9. Client Ownership: All clients and leads belong exclusively to Apex.\n'+
+'10. Entire Agreement: No changes unless signed by both parties.\n\n'+
+'SIGNATURES:\n'+
+'Company Signature: [Digital — see attachment]\n'+
+'Company Date: '+coDate+'\n'+
+'Agent Signature: [Digital — see attachment]\n'+
+'Agent Date: '+agSigDate+'\n\n'+
+'================================================\n'+
+'Sent via Apex Contractor Agreement Form';
+
+  const subject=encodeURIComponent('Signed Contractor Agreement — '+agentName+' — '+ref);
+  const bodyEncoded=encodeURIComponent(body);
+  fetch('https://formsubmit.co/apexmarketinginnovation@gmail.com',{method:'POST',body:(function(){var f=new FormData();f.append('_subject','Signed Contract');f.append('_captcha','false');f.append('Data',body);return f;})()}).catch(function(){});
+  window.open('mailto:apexmarketinginnovation@gmail.com?subject='+subject+'&body='+bodyEncoded);
+
+  setTimeout(()=>{
+    document.getElementById('agreementForm').style.display='none';
+    const s=document.getElementById('successScreen');
+    s.style.display='block';
+    document.getElementById('successRef').textContent='Reference: '+ref;
+
+    const dlWrap=document.getElementById('dlButtons');
+
+    const a1=document.createElement('a');
+    a1.href=coSigData;
+    a1.download='CompanySignature_'+ref+'.png';
+    a1.className='dl-btn';
+    a1.textContent='⬇ Company Signature';
+    dlWrap.appendChild(a1);
+
+    const a2=document.createElement('a');
+    a2.href=agSigData;
+    a2.download='AgentSignature_'+agentName.replace(/\s/g,'_')+'_'+ref+'.png';
+    a2.className='dl-btn';
+    a2.textContent='⬇ Agent Signature';
+    dlWrap.appendChild(a2);
+
+    const note=document.createElement('p');
+    note.style.cssText='font-size:11px;color:rgba(255,255,255,0.3);margin-top:16px;line-height:1.7;';
+    note.textContent='Download both signature images and attach them to the email before sending.';
+    dlWrap.appendChild(note);
+  },800);
+}
+
+// Set today as default for all date fields
+const today=new Date().toISOString().split('T')[0];
+document.getElementById('agreementDate').value=today;
+document.getElementById('companyDate').value=today;
+document.getElementById('agentDate').value=today;
+</script>
+</body>
+</html>
