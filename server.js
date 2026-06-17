@@ -60,6 +60,20 @@ if (!db.users.find(u => u.role === 'admin')) {
   saveData(db);
 }
 
+// Migrate existing agent from old system if not already present
+if (!db.users.find(u => u.username === 'Dwight McLittle')) {
+  const hash = bcrypt.hashSync('LittleRock', 10);
+  db.users.push({
+    id: 'ag1781632468367',
+    name: 'Dwight McLittle',
+    username: 'Dwight McLittle',
+    password: hash,
+    role: 'agent',
+    email: 'dwightmclittle980@gmail.com'
+  });
+  saveData(db);
+}
+
 // ── MIDDLEWARE ─────────────────────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
