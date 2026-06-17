@@ -67,7 +67,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: { maxAge: 24 * 60 * 60 * 1000 }
 }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 // ── AUTH MIDDLEWARE ────────────────────────────────────────────────
 function requireLogin(req, res, next) {
@@ -213,18 +213,18 @@ app.post('/api/payments', requireAdmin, (req, res) => {
 
 // ── DOCUMENT ROUTES ────────────────────────────────────────────────
 app.get('/doc/application', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'application.html'));
+  res.sendFile(path.join(__dirname, 'application.html'));
 });
 app.get('/doc/contract', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'contractor-agreement.html'));
+  res.sendFile(path.join(__dirname, 'contractor-agreement.html'));
 });
 app.get('/doc/welcome', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'welcome-email.html'));
+  res.sendFile(path.join(__dirname, 'welcome-email.html'));
 });
 
 // ── SERVE MAIN APP ─────────────────────────────────────────────────
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index-1.html'));
 });
 
 app.listen(PORT, () => {
