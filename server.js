@@ -1,61 +1,63 @@
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
-const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ── DATABASE SETUP ─────────────────────────────────────────────────
-const dbPath = path.join(__dirname, '.data', 'apex.db');
-if (!fs.existsSync(path.join(__dirname, '.data'))) {
-  fs.mkdirSync(path.join(__dirname, '.data'), { recursive: true });
+// ── JSON FILE DATABASE ─────────────────────────────────────────────
+const dataDir = path.join(__dirname, '.data');
+const dataFile = path.join(dataDir, 'apex-data.json');
+
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
 }
 
-const db = new Database(dbPath);
+function loadData() {
+  if (!fs.existsSync(dataFile)) {
+    return {
+      users: [],
+      clients: [],
+      contracts: [],
+      coldLeads: [],
+      assignedLeads: [],
+      payments: []
+    };
+  }
+  try {
+    return JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+  } catch (e) {
+    return {
+      users: [],
+      clients: [],
+      contracts: [],
+      coldLeads: [],
+      assignedLeads: [],
+      payments: []
+    };
+  }
+}
 
-db.exec(`
-  CREATE TABLE IF NOT EXISTS users (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    role TEXT NOT NULL DEFAULT 'agent',
-    email TEXT
-  );
-  CREATE TABLE IF NOT EXISTS clients (
-    id TEXT PRIMARY KEY,
-    bizName TEXT, email TEXT, pkg TEXT, dueDate TEXT, agentId TEXT, createdAt TEXT
-  );
-  CREATE TABLE IF NOT EXISTS contracts (
-    id TEXT PRIMARY KEY,
-    agentId TEXT, agentName TEXT, bizName TEXT, clientEmail TEXT,
-    clientPhone TEXT, pkg TEXT, setupFee TEXT, saleDate TEXT,
-    spec TEXT, status TEXT DEFAULT 'pending', submittedAt TEXT
-  );
-  CREATE TABLE IF NOT EXISTS cold_leads (
-    id TEXT PRIMARY KEY,
-    agentId TEXT, agentName TEXT, bizName TEXT, email TEXT,
-    reason TEXT, notes TEXT, submittedAt TEXT
-  );
-  CREATE TABLE IF NOT EXISTS assigned_leads (
-    id TEXT PRIMARY KEY,
-    agentId TEXT, bizName TEXT, email TEXT, assignedAt TEXT
-  );
-  CREATE TABLE IF NOT EXISTS payments (
-    id TEXT PRIMARY KEY,
-    agentId TEXT, agentName TEXT, amount TEXT, client TEXT, sentAt TEXT
-  );
-`);
+function saveData(data) {
+  fs.writeFileSync(dataFile, JSON.stringify(data, null, 2));
+}
+
+let db = loadData();
 
 // Create admin account if it doesn't exist
-const adminExists = db.prepare('SELECT id FROM users WHERE role = ?').get('admin');
-if (!adminExists) {
+if (!db.users.find(u => u.role === 'admin')) {
   const hash = bcrypt.hashSync('Jermel1$', 10);
-  db.prepare('INSERT INTO users (id, name, username, password, role, email) VALUES (?, ?, ?, ?, ?, ?)')
-    .run('admin', 'Jermel', 'Superman 3000', hash, 'admin', 'apexmarketinginnovation@gmail.com');
+  db.users.push({
+    id: 'admin',
+    name: 'Jermel',
+    username: 'Superman 3000',
+    password: hash,
+    role: 'admin',
+    email: 'apexmarketinginnovation@gmail.com'
+  });
+  saveData(db);
 }
 
 // ── MIDDLEWARE ─────────────────────────────────────────────────────
@@ -82,7 +84,8 @@ function requireAdmin(req, res, next) {
 // ── AUTH ROUTES ────────────────────────────────────────────────────
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
-  const user = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
+  db = loadData();
+  const user = db.users.find(u => u.username === username);
   if (!user || !bcrypt.compareSync(password, user.password)) {
     return res.json({ success: false, error: 'Incorrect username or password.' });
   }
@@ -102,112 +105,137 @@ app.get('/api/me', (req, res) => {
 
 // ── AGENT MANAGEMENT (Admin only) ─────────────────────────────────
 app.get('/api/agents', requireAdmin, (req, res) => {
-  const agents = db.prepare('SELECT id, name, username, email, role FROM users WHERE role = ?').all('agent');
+  db = loadData();
+  const agents = db.users.filter(u => u.role === 'agent').map(a => ({ id: a.id, name: a.name, username: a.username, email: a.email, role: a.role }));
   res.json(agents);
 });
 
 app.post('/api/agents', requireAdmin, (req, res) => {
   const { name, username, password, email } = req.body;
   if (!name || !username || !password || !email) return res.json({ success: false, error: 'All fields required.' });
-  const exists = db.prepare('SELECT id FROM users WHERE username = ?').get(username);
-  if (exists) return res.json({ success: false, error: 'Username already exists.' });
+  db = loadData();
+  if (db.users.find(u => u.username === username)) return res.json({ success: false, error: 'Username already exists.' });
   const hash = bcrypt.hashSync(password, 10);
   const id = 'ag' + Date.now();
-  db.prepare('INSERT INTO users (id, name, username, password, role, email) VALUES (?, ?, ?, ?, ?, ?)')
-    .run(id, name, username, hash, 'agent', email);
+  db.users.push({ id, name, username, password: hash, role: 'agent', email });
+  saveData(db);
   res.json({ success: true });
 });
 
 app.delete('/api/agents/:id', requireAdmin, (req, res) => {
-  db.prepare('DELETE FROM users WHERE id = ? AND role = ?').run(req.params.id, 'agent');
+  db = loadData();
+  db.users = db.users.filter(u => !(u.id === req.params.id && u.role === 'agent'));
+  saveData(db);
   res.json({ success: true });
 });
 
 // ── CLIENT MANAGEMENT ─────────────────────────────────────────────
 app.get('/api/clients', requireAdmin, (req, res) => {
-  res.json(db.prepare('SELECT * FROM clients ORDER BY createdAt DESC').all());
+  db = loadData();
+  res.json(db.clients.slice().reverse());
 });
 
 app.post('/api/clients', requireAdmin, (req, res) => {
   const { bizName, email, pkg, dueDate } = req.body;
-  db.prepare('INSERT INTO clients (id, bizName, email, pkg, dueDate, createdAt) VALUES (?, ?, ?, ?, ?, ?)')
-    .run('cl' + Date.now(), bizName, email, pkg, dueDate, new Date().toLocaleDateString());
+  db = loadData();
+  db.clients.push({ id: 'cl' + Date.now(), bizName, email, pkg, dueDate, createdAt: new Date().toLocaleDateString() });
+  saveData(db);
   res.json({ success: true });
 });
 
 app.delete('/api/clients/:id', requireAdmin, (req, res) => {
-  db.prepare('DELETE FROM clients WHERE id = ?').run(req.params.id);
+  db = loadData();
+  db.clients = db.clients.filter(c => c.id !== req.params.id);
+  saveData(db);
   res.json({ success: true });
 });
 
 // ── CONTRACTS ─────────────────────────────────────────────────────
 app.get('/api/contracts', requireLogin, (req, res) => {
+  db = loadData();
   if (req.session.user.role === 'admin') {
-    res.json(db.prepare('SELECT * FROM contracts ORDER BY submittedAt DESC').all());
+    res.json(db.contracts.slice().reverse());
   } else {
-    res.json(db.prepare('SELECT * FROM contracts WHERE agentId = ? ORDER BY submittedAt DESC').all(req.session.user.id));
+    res.json(db.contracts.filter(c => c.agentId === req.session.user.id).slice().reverse());
   }
 });
 
 app.post('/api/contracts', requireLogin, (req, res) => {
   const u = req.session.user;
   const d = req.body;
-  db.prepare('INSERT INTO contracts (id, agentId, agentName, bizName, clientEmail, clientPhone, pkg, setupFee, saleDate, spec, status, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
-    .run('ct' + Date.now(), u.id, u.name, d.bizName, d.clientEmail, d.clientPhone, d.pkg, d.setupFee, d.saleDate, JSON.stringify(d.spec || {}), 'pending', new Date().toLocaleDateString());
+  db = loadData();
+  db.contracts.push({
+    id: 'ct' + Date.now(), agentId: u.id, agentName: u.name, bizName: d.bizName, clientEmail: d.clientEmail,
+    clientPhone: d.clientPhone, pkg: d.pkg, setupFee: d.setupFee, saleDate: d.saleDate,
+    spec: d.spec || {}, status: 'pending', submittedAt: new Date().toLocaleDateString()
+  });
+  saveData(db);
   res.json({ success: true });
 });
 
 app.post('/api/contracts/:id/approve', requireAdmin, (req, res) => {
-  db.prepare("UPDATE contracts SET status = 'approved' WHERE id = ?").run(req.params.id);
+  db = loadData();
+  const c = db.contracts.find(x => x.id === req.params.id);
+  if (c) c.status = 'approved';
+  saveData(db);
   res.json({ success: true });
 });
 
 // ── COLD LEADS ─────────────────────────────────────────────────────
 app.get('/api/cold-leads', requireLogin, (req, res) => {
+  db = loadData();
   if (req.session.user.role === 'admin') {
-    res.json(db.prepare('SELECT * FROM cold_leads ORDER BY submittedAt DESC').all());
+    res.json(db.coldLeads.slice().reverse());
   } else {
-    res.json(db.prepare('SELECT * FROM cold_leads WHERE agentId = ? ORDER BY submittedAt DESC').all(req.session.user.id));
+    res.json(db.coldLeads.filter(c => c.agentId === req.session.user.id).slice().reverse());
   }
 });
 
 app.post('/api/cold-leads', requireLogin, (req, res) => {
   const u = req.session.user;
   const d = req.body;
-  db.prepare('INSERT INTO cold_leads (id, agentId, agentName, bizName, email, reason, notes, submittedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
-    .run('cd' + Date.now(), u.id, u.name, d.bizName, d.email, d.reason, d.notes, new Date().toLocaleDateString());
+  db = loadData();
+  db.coldLeads.push({
+    id: 'cd' + Date.now(), agentId: u.id, agentName: u.name, bizName: d.bizName, email: d.email,
+    reason: d.reason, notes: d.notes, submittedAt: new Date().toLocaleDateString()
+  });
+  saveData(db);
   res.json({ success: true });
 });
 
 // ── ASSIGNED LEADS ────────────────────────────────────────────────
 app.get('/api/assigned-leads', requireLogin, (req, res) => {
+  db = loadData();
   if (req.session.user.role === 'admin') {
-    res.json(db.prepare('SELECT * FROM assigned_leads ORDER BY assignedAt DESC').all());
+    res.json(db.assignedLeads.slice().reverse());
   } else {
-    res.json(db.prepare('SELECT * FROM assigned_leads WHERE agentId = ? ORDER BY assignedAt DESC').all(req.session.user.id));
+    res.json(db.assignedLeads.filter(l => l.agentId === req.session.user.id).slice().reverse());
   }
 });
 
 app.post('/api/assigned-leads', requireAdmin, (req, res) => {
   const { agentId, bizName, email } = req.body;
-  db.prepare('INSERT INTO assigned_leads (id, agentId, bizName, email, assignedAt) VALUES (?, ?, ?, ?, ?)')
-    .run('al' + Date.now(), agentId, bizName, email, new Date().toLocaleDateString());
+  db = loadData();
+  db.assignedLeads.push({ id: 'al' + Date.now(), agentId, bizName, email, assignedAt: new Date().toLocaleDateString() });
+  saveData(db);
   res.json({ success: true });
 });
 
 // ── PAYMENTS / COMMISSIONS ─────────────────────────────────────────
 app.get('/api/payments', requireLogin, (req, res) => {
+  db = loadData();
   if (req.session.user.role === 'admin') {
-    res.json(db.prepare('SELECT * FROM payments ORDER BY sentAt DESC').all());
+    res.json(db.payments.slice().reverse());
   } else {
-    res.json(db.prepare('SELECT * FROM payments WHERE agentId = ? ORDER BY sentAt DESC').all(req.session.user.id));
+    res.json(db.payments.filter(p => p.agentId === req.session.user.id).slice().reverse());
   }
 });
 
 app.post('/api/payments', requireAdmin, (req, res) => {
   const { agentId, agentName, amount, client } = req.body;
-  db.prepare('INSERT INTO payments (id, agentId, agentName, amount, client, sentAt) VALUES (?, ?, ?, ?, ?, ?)')
-    .run('py' + Date.now(), agentId, agentName, amount, client, new Date().toLocaleDateString());
+  db = loadData();
+  db.payments.push({ id: 'py' + Date.now(), agentId, agentName, amount, client, sentAt: new Date().toLocaleDateString() });
+  saveData(db);
   res.json({ success: true });
 });
 
