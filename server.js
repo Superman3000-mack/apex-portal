@@ -266,7 +266,7 @@ app.get('/doc/welcome', (req, res) => {
 
 // ── SERVE MAIN APP ─────────────────────────────────────────────────
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index-1.html'));
+  res.sendFile(path.join(__dirname, 'index-1-1.html'));
 });
 
 app.listen(PORT, () => {
