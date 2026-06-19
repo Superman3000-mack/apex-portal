@@ -3,6 +3,7 @@ const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -75,6 +76,13 @@ if (!db.users.find(u => u.username === 'Dwight McLittle')) {
 }
 
 // ── MIDDLEWARE ─────────────────────────────────────────────────────
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -251,6 +259,32 @@ app.post('/api/payments', requireAdmin, (req, res) => {
   db.payments.push({ id: 'py' + Date.now(), agentId, agentName, amount, client, sentAt: new Date().toLocaleDateString() });
   saveData(db);
   res.json({ success: true });
+});
+
+// ── STRIPE CHARGE (real card processing — secret key never leaves the server) ──
+app.post('/api/charge', async (req, res) => {
+  try {
+    const { paymentMethodId, amount, description, receiptEmail } = req.body;
+    if (!paymentMethodId || !amount) {
+      return res.status(400).json({ success: false, error: 'Missing payment method or amount.' });
+    }
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(parseFloat(amount) * 100), // Stripe uses cents
+      currency: 'usd',
+      payment_method: paymentMethodId,
+      confirm: true,
+      description: description || 'Apex Marketing Innovation payment',
+      receipt_email: receiptEmail || undefined,
+      automatic_payment_methods: { enabled: true, allow_redirects: 'never' }
+    });
+    if (paymentIntent.status === 'succeeded') {
+      res.json({ success: true, paymentIntentId: paymentIntent.id });
+    } else {
+      res.json({ success: false, error: 'Payment did not complete. Status: ' + paymentIntent.status });
+    }
+  } catch (err) {
+    res.json({ success: false, error: err.message || 'Payment failed. Please check the card details and try again.' });
+  }
 });
 
 // ── DOCUMENT ROUTES ────────────────────────────────────────────────
