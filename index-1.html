@@ -956,18 +956,41 @@ function processPayment() {
       btn.disabled = false; btn.innerHTML = '&#128274;&nbsp; Charge Client Card';
       return;
     }
-    var ref = 'APX-' + Date.now().toString().slice(-6);
-    var comm = '$' + (selAmt * 0.25).toLocaleString();
-    document.getElementById('payReceipt').innerHTML =
-      '<div class="r-row"><span>Client</span><span>'+fn+' '+ln+'</span></div>' +
-      '<div class="r-row"><span>Business</span><span>'+biz+'</span></div>' +
-      '<div class="r-row"><span>Service</span><span>'+svcNames[selSvcNum]+'</span></div>' +
-      '<div class="r-row"><span>Reference</span><span>'+ref+'</span></div>' +
-      '<div class="r-row"><span>Date</span><span>'+new Date().toLocaleDateString()+'</span></div>' +
-      '<div class="r-row gold"><span>Amount Charged</span><span>$'+selAmt.toLocaleString()+'.00</span></div>' +
-      '<div class="r-row gold"><span>Your Commission</span><span>'+comm+'</span></div>';
-    document.getElementById('payForm').style.display = 'none';
-    document.getElementById('payOK').style.display = 'block';
+    // Send to the real backend to actually charge the card
+    fetch('/api/charge', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        paymentMethodId: result.paymentMethod.id,
+        amount: selAmt,
+        description: svcNames[selSvcNum] + ' — ' + biz,
+        receiptEmail: email
+      })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(chargeResult){
+      if (!chargeResult.success) {
+        showPayErr(chargeResult.error || 'Payment failed. Please try again.');
+        btn.disabled = false; btn.innerHTML = '&#128274;&nbsp; Charge Client Card';
+        return;
+      }
+      var ref = 'APX-' + Date.now().toString().slice(-6);
+      var comm = '$' + (selAmt * 0.25).toLocaleString();
+      document.getElementById('payReceipt').innerHTML =
+        '<div class="r-row"><span>Client</span><span>'+fn+' '+ln+'</span></div>' +
+        '<div class="r-row"><span>Business</span><span>'+biz+'</span></div>' +
+        '<div class="r-row"><span>Service</span><span>'+svcNames[selSvcNum]+'</span></div>' +
+        '<div class="r-row"><span>Reference</span><span>'+ref+'</span></div>' +
+        '<div class="r-row"><span>Date</span><span>'+new Date().toLocaleDateString()+'</span></div>' +
+        '<div class="r-row gold"><span>Amount Charged</span><span>$'+selAmt.toLocaleString()+'.00</span></div>' +
+        '<div class="r-row gold"><span>Your Commission</span><span>'+comm+'</span></div>';
+      document.getElementById('payForm').style.display = 'none';
+      document.getElementById('payOK').style.display = 'block';
+    })
+    .catch(function(){
+      showPayErr('Could not reach payment server. Please check your connection and try again.');
+      btn.disabled = false; btn.innerHTML = '&#128274;&nbsp; Charge Client Card';
+    });
   });
 }
 
